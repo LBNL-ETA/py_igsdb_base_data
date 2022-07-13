@@ -428,8 +428,9 @@ class ShadeLayerProperties:
 @dataclass_json
 @dataclass
 class BaseProduct:
-
     units_system: str = "SI"  # or IP
+
+    active: Boolean = True
 
     id: Optional[int] = None
     type: Optional[str] = None
