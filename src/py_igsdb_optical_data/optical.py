@@ -1,0 +1,238 @@
+from pydantic.dataclasses import dataclass
+from enum import Enum
+import typing
+
+from .standard import CalculationStandardName
+
+
+class OpticalDataType(Enum):
+    DISCRETE = "Discrete"
+    BAND = "Band"
+
+
+class AngularResolutionType(Enum):
+    DIRECT = "Direct"
+    DIRECT_DIFFUSE = "Direct / Diffuse"
+    DIFFUSE_DIFFUSE = "Diffuse / Diffuse"
+    BSDF = "BSDF"
+
+
+INCIDENCE_ANGULAR_RESOLUTION_TYPES = [
+    AngularResolutionType.DIRECT,
+    AngularResolutionType.BSDF
+]
+
+OUTGOING_ANGULAR_RESOLUTION_TYPES = [
+    AngularResolutionType.DIRECT,
+    AngularResolutionType.BSDF
+]
+
+
+@dataclass
+class OpticalProperties:
+    optical_data_type: str = OpticalDataType.DISCRETE.name
+    incidence_angular_resolution_type: str = AngularResolutionType.DIRECT.name
+    outgoing_angular_resolution_type: str = AngularResolutionType.DIRECT.name
+    optical_data: dict = None
+
+
+@dataclass
+class OpticalStandardMethodFluxResults:
+    direct_direct: float = None     # "Specular" in CGDB ShadeMaterial
+    direct_diffuse: float = None    # "Diffuse" in CGDB ShadeMaterial
+    direct_hemispherical: float = None
+    diffuse_diffuse: float = None
+    matrix: typing.List[typing.List[float]] = None
+
+
+@dataclass
+class OpticalStandardMethodResults:
+    transmittance_front: OpticalStandardMethodFluxResults = None
+    transmittance_back: OpticalStandardMethodFluxResults = None
+    reflectance_front: OpticalStandardMethodFluxResults = None
+    reflectance_back: OpticalStandardMethodFluxResults = None
+    absorptance_front_direct: float = None
+    absorptance_back_direct: float = None
+    absorptance_front_hemispheric: float = None
+    absorptance_back_hemispheric: float = None
+    error = None
+
+
+@dataclass
+class ThermalIRResults:
+    transmittance_front_diffuse_diffuse: typing.Optional[float] = None
+    transmittance_back_diffuse_diffuse: typing.Optional[float] = None
+    absorptance_front_hemispheric: typing.Optional[float] = None
+    absorptance_back_hemispheric: typing.Optional[float] = None
+
+    error = None
+
+    # Shortcut properties...
+
+    @property
+    def emissivity_front_hemispheric(self) -> typing.Optional[float]:
+        if self.absorptance_front_hemispheric:
+            return self.absorptance_front_hemispheric
+        else:
+            return None
+
+    @property
+    def emissivity_back_hemispheric(self) -> typing.Optional[float]:
+        if self.absorptance_back_hemispheric:
+            return self.absorptance_back_hemispheric
+        else:
+            return None
+
+    @property
+    def transmittance_front(self) -> typing.Optional[float]:
+        if self.transmittance_front_diffuse_diffuse:
+            return self.transmittance_front_diffuse_diffuse
+        else:
+            return None
+
+    @property
+    def transmittance_back(self) -> typing.Optional[float]:
+        if self.transmittance_back_diffuse_diffuse:
+            return self.transmittance_back_diffuse_diffuse
+        else:
+            return None
+
+
+@dataclass
+class TrichromaticResult:
+    x: typing.Optional[float] = None
+    y: typing.Optional[float] = None
+    z: typing.Optional[float] = None
+
+
+@dataclass
+class LabResult:
+    l: typing.Optional[float] = None
+    a: typing.Optional[float] = None
+    b: typing.Optional[float] = None
+
+
+@dataclass
+class RGBResult:
+    r: typing.Optional[float] = None
+    g: typing.Optional[float] = None
+    b: typing.Optional[float] = None
+
+
+@dataclass
+class OpticalColorResult:
+    trichromatic: typing.Optional[TrichromaticResult] = None
+    lab: typing.Optional[LabResult] = None
+    rgb: typing.Optional[RGBResult] = None
+
+
+@dataclass
+class OpticalColorFluxResults:
+    direct_direct: typing.Optional[OpticalColorResult] = None
+    direct_diffuse: typing.Optional[OpticalColorResult] = None
+    direct_hemispherical: typing.Optional[OpticalColorResult] = None
+    diffuse_diffuse: typing.Optional[OpticalColorResult] = None
+
+
+@dataclass
+class OpticalColorResults:
+    transmittance_front: typing.Optional[OpticalColorFluxResults] = None
+    transmittance_back: typing.Optional[OpticalColorFluxResults] = None
+    reflectance_front: typing.Optional[OpticalColorFluxResults] = None
+    reflectance_back: typing.Optional[OpticalColorFluxResults] = None
+    error = None
+
+
+@dataclass
+class IntegratedSpectralAveragesSummaryValues:
+    # Not required, but if set describes what standard
+    # was used to generate values contained in this dataclass
+    # String should be defined in CalculationStandardName Enum.
+    # (In Checkertool the standard used for the generation of these values
+    # is also saved in a parent model.)
+    solar: typing.Optional[OpticalStandardMethodResults] = None
+    photopic: typing.Optional[OpticalStandardMethodResults] = None
+    thermal_ir: typing.Optional[ThermalIRResults] = None
+    tuv: typing.Optional[OpticalStandardMethodResults] = None
+    spf: typing.Optional[OpticalStandardMethodResults] = None
+    tdw: typing.Optional[OpticalStandardMethodResults] = None
+    tkr: typing.Optional[OpticalStandardMethodResults] = None
+    color: typing.Optional[OpticalColorResults] = None
+
+
+class IntegratedSpectralAveragesSummaryValuesFactory:
+
+    @classmethod
+    def create(cls) -> IntegratedSpectralAveragesSummaryValues:
+        """
+        Create a fully initialized instance of IntegratedSpectralAveragesSummaryValues
+        """
+
+        summary = IntegratedSpectralAveragesSummaryValues()
+        summary.solar = OpticalStandardMethodResultsFactory.create()
+        summary.photopic = OpticalStandardMethodResultsFactory.create()
+        summary.thermal_ir = ThermalIRResults()
+        summary.tuv = OpticalStandardMethodResultsFactory.create()
+        summary.spf = OpticalStandardMethodResultsFactory.create()
+        summary.tdw = OpticalStandardMethodResultsFactory.create()
+        summary.tkr = OpticalStandardMethodResultsFactory.create()
+        summary.color = OpticalColorResultsFactory.create()
+        return summary
+
+
+class OpticalStandardMethodResultsFactory:
+
+    @classmethod
+    def create(cls) -> OpticalStandardMethodResults:
+        """
+        Create a fully initialized instance of OpticalStandardMethodResults
+        """
+        results = OpticalStandardMethodResults()
+        results.transmittance_front = OpticalStandardMethodFluxResults()
+        results.transmittance_back = OpticalStandardMethodFluxResults()
+        results.reflectance_front = OpticalStandardMethodFluxResults()
+        results.reflectance_back = OpticalStandardMethodFluxResults()
+        return results
+
+
+class OpticalColorResultFactory:
+
+    @classmethod
+    def create(cls) -> OpticalColorResult:
+        result = OpticalColorResult()
+        result.trichromatic = TrichromaticResult()
+        result.rgb = RGBResult()
+        result.lab = LabResult()
+        return result
+
+
+class OpticalColorResultsFactory:
+
+    @classmethod
+    def create(cls) -> OpticalColorResults:
+        """
+        Create a fully initialized instance of OpticalColorResult
+        """
+        results = OpticalColorResults()
+        results.transmittance_front = OpticalColorFluxResultsFactory.create()
+        results.transmittance_back = OpticalColorFluxResultsFactory.create()
+        results.reflectance_front = OpticalColorFluxResultsFactory.create()
+        results.reflectance_back = OpticalColorFluxResultsFactory.create()
+        return results
+
+
+class OpticalColorFluxResultsFactory:
+
+    @classmethod
+    def create(cls) -> OpticalColorFluxResults:
+        """
+        Create a fully initialized instance of OpticalColorResult
+        """
+        results = OpticalColorFluxResults()
+
+        results.direct_direct = OpticalColorResultFactory.create()
+        results.direct_diffuse = OpticalColorResultFactory.create()
+        results.direct_hemispherical = OpticalColorResultFactory.create()
+        results.diffuse_diffuse = OpticalColorResultFactory.create()
+
+        return results
