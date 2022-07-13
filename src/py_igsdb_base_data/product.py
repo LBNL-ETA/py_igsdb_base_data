@@ -430,7 +430,7 @@ class ShadeLayerProperties:
 class BaseProduct:
     units_system: str = "SI"  # or IP
 
-    active: Boolean = True
+    active: bool = True
 
     id: Optional[int] = None
     type: Optional[str] = None
