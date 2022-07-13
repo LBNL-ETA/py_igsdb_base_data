@@ -6,7 +6,7 @@ from unittest import TestCase
 
 from dataclasses_json import dataclass_json
 
-from py_igsdb_base_data.product import BaseProduct
+from py_igsdb_base_data.product import BaseProduct, PhysicalProperties
 
 
 @dataclass_json
@@ -30,7 +30,7 @@ class TestDataclass(TestCase):
             json_content = f.read()
 
         # Load json string into our dataclass
-        product = BaseProduct.from_json(json_content)
+        product: BaseProduct = BaseProduct.from_json(json_content)
 
         # Get original json properties to see if
         # they were preserved...
@@ -39,3 +39,7 @@ class TestDataclass(TestCase):
 
         # Check dataclass against original properties.
         self.assertEquals(product.subtype, expected_subtype)
+
+        physical_properties = product.physical_properties
+        # Makes sure nested data was transformed to dataclasses by dataclasses-json
+        self.assertEquals(type(physical_properties), PhysicalProperties)
