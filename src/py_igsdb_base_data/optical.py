@@ -2,7 +2,7 @@ from pydantic.dataclasses import dataclass
 from enum import Enum
 import typing
 
-from .standard import CalculationStandardName
+from py_igsdb_base_data.standard import CalculationStandardName
 
 
 class OpticalDataType(Enum):

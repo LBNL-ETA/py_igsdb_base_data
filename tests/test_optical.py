@@ -1,4 +1,4 @@
-from src.py_igsdb_optical_data.optical import OpticalStandardMethodResultsFactory, OpticalStandardMethodResults, \
+from py_igsdb_base_data.optical import OpticalStandardMethodResultsFactory, OpticalStandardMethodResults, \
     OpticalColorResultFactory, IntegratedSpectralAveragesSummaryValuesFactory, \
     IntegratedSpectralAveragesSummaryValues, OpticalColorResult
 

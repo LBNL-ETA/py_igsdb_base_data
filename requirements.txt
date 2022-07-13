@@ -1,0 +1,3 @@
+
+# local dev
+pytest==7.1.2
