@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum
 
 
@@ -14,3 +15,11 @@ class CalculationStandardMethodTypes(Enum):
     SPF = "SPF"
     TDW = "TDW"
     TKR = "TKR"
+
+
+@dataclass
+class CalculationStandard:
+    name: str
+    method_type: str
+    description: str
+    contents: str
