@@ -551,10 +551,11 @@ class BaseProduct:
 
     @type.setter
     def type(self, v: str) -> None:
-        try:
-            ProductType[v]
-        except KeyError:
-            raise ValueError(f"Invalid product type: {v}")
+        if v is not None:
+            try:
+                ProductType[v]
+            except KeyError:
+                raise ValueError(f"Invalid product type: {v}")
         self._type = v
 
     @property
@@ -563,10 +564,11 @@ class BaseProduct:
 
     @subtype.setter
     def subtype(self, v: str) -> None:
-        try:
-            ProductSubtype[v]
-        except KeyError:
-            raise ValueError(f"Invalid product subtype: {v}")
+        if v is not None:
+            try:
+                ProductSubtype[v]
+            except KeyError:
+                raise ValueError(f"Invalid product subtype: {v}")
         self._subtype = v
 
     @property
@@ -575,10 +577,11 @@ class BaseProduct:
 
     @token_type.setter
     def token_type(self, v: str) -> None:
-        try:
-            TokenType[v]
-        except KeyError:
-            raise ValueError(f"Invalid product token type: {v}")
+        if v is not None:
+            try:
+                TokenType[v]
+            except KeyError:
+                raise ValueError(f"Invalid product token type: {v}")
         self._token_type = v
 
     @property
