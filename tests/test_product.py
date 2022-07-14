@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Optional, List
 from unittest import TestCase
 
+import pytest
 from dataclasses_json import dataclass_json
 
 from py_igsdb_base_data.product import BaseProduct, PhysicalProperties
@@ -43,3 +44,33 @@ class TestDataclass(TestCase):
         physical_properties = product.physical_properties
         # Makes sure nested data was transformed to dataclasses by dataclasses-json
         self.assertEquals(type(physical_properties), PhysicalProperties)
+
+    def test_cannot_set_wrong_product_type(self):
+        # Test init
+        with pytest.raises(ValueError):
+            BaseProduct(type='INVALID_TYPE')
+        # Test manual set
+        with pytest.raises(ValueError):
+            product = BaseProduct()
+            product.type = "INVALID"
+
+    def test_cannot_set_wrong_product_subtype(self):
+        # Test init
+        with pytest.raises(ValueError):
+            BaseProduct(subtype='INVALID_TYPE')
+
+        # Test manual set
+        with pytest.raises(ValueError):
+            product = BaseProduct()
+            product.subtype = "INVALID"
+
+    def test_cannot_set_wrong_product_token_type(self):
+        # Test init
+        with pytest.raises(ValueError):
+            BaseProduct(token_type='INVALID_TYPE')
+
+        # Test manual set
+        with pytest.raises(ValueError):
+            product = BaseProduct()
+            product.token_type = "INVALID"
+

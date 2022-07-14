@@ -428,15 +428,25 @@ class ShadeLayerProperties:
 @dataclass_json
 @dataclass
 class BaseProduct:
+
+    # How do you get getters and setters in a dataclasses
+    # to validate incoming values and not mess up the
+    # auto-generated init? It's not easy:
+    # https://florimond.dev/en/posts/2018/10/reconciling-dataclasses-and-properties-in-python/
+    # We have to do this:
+    type: Optional[str]
+    _type: str = field(init=False, repr=False)
+
+    subtype: Optional[str]
+    _subtype: str = field(init=False, repr=False)
+
+    token_type: Optional[str]
+    _token_type: str = field(init=False, repr=False)
+
     units_system: str = "SI"  # or IP
-
     active: bool = True
-
     id: Optional[int] = None
-    type: Optional[str] = None
-    subtype: Optional[str] = None
     token: Optional[str] = None
-    token_type: Optional[str] = None
 
     product_id: Optional[int] = None
     data_file_name: Optional[str] = None
@@ -535,6 +545,42 @@ class BaseProduct:
     product_json: Dict = field(default_factory=dict)
 
     # GETTERS and SETTERS
+    @property
+    def type(self) -> str:
+        return self._type
+
+    @type.setter
+    def type(self, v: str) -> None:
+        try:
+            ProductType[v]
+        except KeyError:
+            raise ValueError(f"Invalid product type: {v}")
+        self._type = v
+
+    @property
+    def subtype(self) -> str:
+        return self._subtype
+
+    @subtype.setter
+    def subtype(self, v: str) -> None:
+        try:
+            ProductSubtype[v]
+        except KeyError:
+            raise ValueError(f"Invalid product subtype: {v}")
+        self._subtype = v
+
+    @property
+    def token_type(self) -> Optional[str]:
+        return self._token_type
+
+    @token_type.setter
+    def token_type(self, v: str) -> None:
+        try:
+            TokenType[v]
+        except KeyError:
+            raise ValueError(f"Invalid product token type: {v}")
+        self._token_type = v
+
     @property
     def name(self) -> Optional[str]:
         if self.product_description:
