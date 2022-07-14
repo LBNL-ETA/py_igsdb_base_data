@@ -242,6 +242,10 @@ class PhysicalProperties:
     predefined_emissivity_front: Optional[str] = None
     predefined_emissivity_back: Optional[str] = None
 
+    def __post_init__(self):
+        if self.optical_properties is None:
+            self.optical_properties = OpticalProperties()
+
 
 @dataclass_json
 @dataclass
