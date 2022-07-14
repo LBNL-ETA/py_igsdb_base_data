@@ -425,23 +425,15 @@ class ShadeLayerProperties:
     timestamp: Optional[int] = None
 
 
+# NOTE: It's difficult to do getters/setters on a dataclass and handle init correctly
+# Settled on this approach: https://github.com/florimondmanca/www/issues/102#issuecomment-733947821
+
 @dataclass_json
 @dataclass
 class BaseProduct:
-
-    # How do you get getters and setters in a dataclasses
-    # to validate incoming values and not mess up the
-    # auto-generated init? It's not easy:
-    # https://florimond.dev/en/posts/2018/10/reconciling-dataclasses-and-properties-in-python/
-    # We have to do this:
-    type: Optional[str]
-    _type: Optional[str] = field(init=False, repr=False)
-
-    subtype: Optional[str]
-    _subtype: Optional[str] = field(init=False, repr=False)
-
-    token_type: Optional[str]
-    _token_type: Optional[str] = field(init=False, repr=False)
+    type: Optional[str] = None
+    subtype: Optional[str] = None
+    token_type: Optional[str] = None
 
     units_system: str = "SI"  # or IP
     active: bool = True
@@ -545,12 +537,10 @@ class BaseProduct:
     product_json: Dict = field(default_factory=dict)
 
     # GETTERS and SETTERS
-    @property
-    def type(self) -> str:
+    def get_type(self) -> str:
         return self._type
 
-    @type.setter
-    def type(self, v: str) -> None:
+    def set_type(self, v: str) -> None:
         if v is not None:
             try:
                 ProductType[v]
@@ -558,12 +548,10 @@ class BaseProduct:
                 raise ValueError(f"Invalid product type: {v}")
         self._type = v
 
-    @property
-    def subtype(self) -> str:
+    def get_subtype(self) -> str:
         return self._subtype
 
-    @subtype.setter
-    def subtype(self, v: str) -> None:
+    def set_subtype(self, v: str) -> None:
         if v is not None:
             try:
                 ProductSubtype[v]
@@ -571,12 +559,10 @@ class BaseProduct:
                 raise ValueError(f"Invalid product subtype: {v}")
         self._subtype = v
 
-    @property
-    def token_type(self) -> Optional[str]:
+    def get_token_type(self) -> Optional[str]:
         return self._token_type
 
-    @token_type.setter
-    def token_type(self, v: str) -> None:
+    def set_token_type(self, v: str) -> None:
         if v is not None:
             try:
                 TokenType[v]
@@ -698,3 +684,8 @@ class BaseProduct:
                     if composition_details:
                         return composition_details.coated_side_faces_exterior
         return False
+
+
+BaseProduct.type = property(BaseProduct.get_type, BaseProduct.set_type)
+BaseProduct.subtype = property(BaseProduct.get_subtype, BaseProduct.set_subtype)
+BaseProduct.token_type = property(BaseProduct.get_token_type, BaseProduct.set_token_type)
