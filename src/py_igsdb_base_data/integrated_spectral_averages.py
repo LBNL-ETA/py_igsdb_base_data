@@ -3,6 +3,8 @@ from enum import Enum
 
 # ENUMS
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+from py_igsdb_base_data.optical import AngularResolutionType
+
 
 class DirectDiffuseType(Enum):
     DIRECT_DIRECT = "Direct - Direct"
