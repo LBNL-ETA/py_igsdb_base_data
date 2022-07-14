@@ -435,13 +435,13 @@ class BaseProduct:
     # https://florimond.dev/en/posts/2018/10/reconciling-dataclasses-and-properties-in-python/
     # We have to do this:
     type: Optional[str]
-    _type: str = field(init=False, repr=False)
+    _type: Optional[str] = field(init=False, repr=False)
 
     subtype: Optional[str]
-    _subtype: str = field(init=False, repr=False)
+    _subtype: Optional[str] = field(init=False, repr=False)
 
     token_type: Optional[str]
-    _token_type: str = field(init=False, repr=False)
+    _token_type: Optional[str] = field(init=False, repr=False)
 
     units_system: str = "SI"  # or IP
     active: bool = True
