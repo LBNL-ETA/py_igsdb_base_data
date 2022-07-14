@@ -436,7 +436,6 @@ class BaseProduct:
     token_type: Optional[str] = None
 
     units_system: str = "SI"  # or IP
-    active: bool = True
     id: Optional[int] = None
     token: Optional[str] = None
 
