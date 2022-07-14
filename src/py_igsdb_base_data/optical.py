@@ -1,8 +1,9 @@
-from pydantic.dataclasses import dataclass
-from enum import Enum
 import typing
+from dataclasses import dataclass, field
+from enum import Enum
+from typing import Dict
 
-from py_igsdb_base_data.standard import CalculationStandardName
+from dataclasses_json import dataclass_json
 
 
 class OpticalDataType(Enum):
@@ -12,8 +13,8 @@ class OpticalDataType(Enum):
 
 class AngularResolutionType(Enum):
     DIRECT = "Direct"
+    DIFFUSE = "Diffuse"
     DIRECT_DIFFUSE = "Direct / Diffuse"
-    DIFFUSE_DIFFUSE = "Diffuse / Diffuse"
     BSDF = "BSDF"
 
 
@@ -28,6 +29,22 @@ OUTGOING_ANGULAR_RESOLUTION_TYPES = [
 ]
 
 
+class AngularResolutionType(Enum):
+    DIRECT = "Direct"
+    DIRECT_DIFFUSE = "Direct / Diffuse"
+    DIFFUSE_DIFFUSE = "Diffuse / Diffuse"
+    BSDF = "BSDF"
+
+
+@dataclass_json
+@dataclass
+class OpticalProperties:
+    optical_data_type: str = OpticalDataType.DISCRETE.name
+    incidence_angular_resolution_type: str = AngularResolutionType.DIRECT.name
+    outgoing_angular_resolution_type: str = AngularResolutionType.DIRECT.name
+    optical_data: Dict = field(default_factory=dict)
+
+
 @dataclass
 class OpticalProperties:
     optical_data_type: str = OpticalDataType.DISCRETE.name
@@ -38,8 +55,8 @@ class OpticalProperties:
 
 @dataclass
 class OpticalStandardMethodFluxResults:
-    direct_direct: float = None     # "Specular" in CGDB ShadeMaterial
-    direct_diffuse: float = None    # "Diffuse" in CGDB ShadeMaterial
+    direct_direct: float = None  # "Specular" in CGDB ShadeMaterial
+    direct_diffuse: float = None  # "Diffuse" in CGDB ShadeMaterial
     direct_hemispherical: float = None
     diffuse_diffuse: float = None
     matrix: typing.List[typing.List[float]] = None
