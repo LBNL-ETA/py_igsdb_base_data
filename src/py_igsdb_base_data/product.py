@@ -590,10 +590,11 @@ class BaseProduct:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
-                if summary.calculation_standard == calculation_standard_name:
-                    value = summary.summary_values.thermal_ir.transmittance_front
-                    if value:
-                        return value
+                if summary.calculation_standard == calculation_standard_name and \
+                        summary.summary_values and \
+                        summary.summary_values.thermal_ir:
+                    return summary.summary_values.thermal_ir.transmittance_front
+
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
         if self.physical_properties and self.physical_properties.predefined_emissivity_front:
@@ -605,9 +606,11 @@ class BaseProduct:
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
                 if summary.calculation_standard == calculation_standard_name:
-                    value = summary.summary_values.thermal_ir.transmittance_back
-                    if value:
-                        return value
+                    if summary.calculation_standard == calculation_standard_name and \
+                            summary.summary_values and \
+                            summary.summary_values.thermal_ir:
+                        return summary.summary_values.thermal_ir.transmittance_back
+
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
         if self.physical_properties and self.physical_properties.predefined_tir_back:
@@ -618,10 +621,10 @@ class BaseProduct:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
-                if summary.calculation_standard == calculation_standard_name:
-                    value = summary.summary_values.thermal_ir.emissivity_front_hemispheric
-                    if value:
-                        return value
+                if summary.calculation_standard == calculation_standard_name and \
+                        summary.summary_values and \
+                        summary.summary_values.thermal_ir:
+                    return summary.summary_values.thermal_ir.emissivity_front_hemispheric
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
         if self.physical_properties and self.physical_properties.predefined_emissivity_front:
@@ -632,14 +635,16 @@ class BaseProduct:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
-                if summary.calculation_standard == calculation_standard_name:
-                    value = summary.summary_values.thermal_ir.emissivity_back_hemispheric
-                    if value:
-                        return value
+                if summary.calculation_standard == calculation_standard_name and \
+                        summary.summary_values and \
+                        summary.summary_values.thermal_ir:
+                    return summary.summary_values.thermal_ir.emissivity_back_hemispheric
+
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
         if self.physical_properties and self.physical_properties.predefined_emissivity_front:
             return self.physical_properties.predefined_emissivity_back
+
         return None
 
     @property
