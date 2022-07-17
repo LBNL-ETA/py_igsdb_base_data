@@ -1,7 +1,7 @@
 import typing
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict
+from typing import Dict, Optional
 
 from dataclasses_json import dataclass_json
 
@@ -160,43 +160,6 @@ class OpticalColorResults:
     error = None
 
 
-@dataclass
-class IntegratedSpectralAveragesSummaryValues:
-    # Not required, but if set describes what standard
-    # was used to generate values contained in this dataclass
-    # String should be defined in CalculationStandardName Enum.
-    # (In Checkertool the standard used for the generation of these values
-    # is also saved in a parent model.)
-    solar: typing.Optional[OpticalStandardMethodResults] = None
-    photopic: typing.Optional[OpticalStandardMethodResults] = None
-    thermal_ir: typing.Optional[ThermalIRResults] = None
-    tuv: typing.Optional[OpticalStandardMethodResults] = None
-    spf: typing.Optional[OpticalStandardMethodResults] = None
-    tdw: typing.Optional[OpticalStandardMethodResults] = None
-    tkr: typing.Optional[OpticalStandardMethodResults] = None
-    color: typing.Optional[OpticalColorResults] = None
-
-
-class IntegratedSpectralAveragesSummaryValuesFactory:
-
-    @classmethod
-    def create(cls) -> IntegratedSpectralAveragesSummaryValues:
-        """
-        Create a fully initialized instance of IntegratedSpectralAveragesSummaryValues
-        """
-
-        summary = IntegratedSpectralAveragesSummaryValues()
-        summary.solar = OpticalStandardMethodResultsFactory.create()
-        summary.photopic = OpticalStandardMethodResultsFactory.create()
-        summary.thermal_ir = ThermalIRResults()
-        summary.tuv = OpticalStandardMethodResultsFactory.create()
-        summary.spf = OpticalStandardMethodResultsFactory.create()
-        summary.tdw = OpticalStandardMethodResultsFactory.create()
-        summary.tkr = OpticalStandardMethodResultsFactory.create()
-        summary.color = OpticalColorResultsFactory.create()
-        return summary
-
-
 class OpticalStandardMethodResultsFactory:
 
     @classmethod
@@ -253,3 +216,405 @@ class OpticalColorFluxResultsFactory:
         results.diffuse_diffuse = OpticalColorResultFactory.create()
 
         return results
+
+
+@dataclass_json
+@dataclass
+class IntegratedSpectralAveragesSummaryValues:
+    # Not required, but if set describes what standard
+    # was used to generate values contained in this dataclass
+    # String should be defined in CalculationStandardName Enum.
+    # (In Checkertool the standard used for the generation of these values
+    # is also saved in a parent model.)
+    solar: typing.Optional[OpticalStandardMethodResults] = None
+    photopic: typing.Optional[OpticalStandardMethodResults] = None
+    thermal_ir: typing.Optional[ThermalIRResults] = None
+    tuv: typing.Optional[OpticalStandardMethodResults] = None
+    spf: typing.Optional[OpticalStandardMethodResults] = None
+    tdw: typing.Optional[OpticalStandardMethodResults] = None
+    tkr: typing.Optional[OpticalStandardMethodResults] = None
+    color: typing.Optional[OpticalColorResults] = None
+
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Convenience getters
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @property
+    def tf_sol(self):
+        try:
+            return self.solar.transmittance_front.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def tf_sol_dir_dif(self):
+        try:
+            return self.solar.transmittance_front.direct_diffuse
+        except AttributeError:
+            return None
+
+    @property
+    def tf_sol_dir_hem(self):
+        try:
+            return self.solar.transmittance_front.direct_hemispherical
+        except AttributeError:
+            return None
+
+    @property
+    def tb_sol(self):
+        try:
+            return self.solar.transmittance_back.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def tb_sol_dir_dif(self):
+        try:
+            return self.solar.transmittance_back.direct_diffuse
+        except AttributeError:
+            return None
+
+    @property
+    def tb_sol_dir_hem(self):
+        try:
+            return self.solar.transmittance_back.direct_hemispherical
+        except AttributeError:
+            return None
+
+    @property
+    def rf_sol(self):
+        try:
+            return self.solar.reflectance_front.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def rf_sol_dir_dif(self):
+        try:
+            return self.solar.reflectance_front.direct_diffuse
+        except AttributeError:
+            return None
+
+    @property
+    def rf_sol_dir_hem(self):
+        try:
+            return self.solar.reflectance_front.direct_hemispherical
+        except AttributeError:
+            return None
+
+    @property
+    def rb_sol(self):
+        try:
+            return self.solar.reflectance_back.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def rb_sol_dir_dif(self):
+        try:
+            return self.solar.reflectance_back.direct_diffuse
+        except AttributeError:
+            return None
+
+    @property
+    def rb_sol_dir_hem(self):
+        try:
+            return self.solar.reflectance_back.direct_hemispherical
+        except AttributeError:
+            return None
+
+    @property
+    def tf_vis(self):
+        try:
+            return self.photopic.transmittance_front.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def tb_vis(self):
+        try:
+            return self.photopic.transmittance_back.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def tb_vis_dir_dif(self):
+        try:
+            return self.photopic.transmittance_back.direct_diffuse
+        except AttributeError:
+            return None
+
+    @property
+    def tb_vis_dir_hem(self):
+        try:
+            return self.photopic.transmittance_back.direct_hemispherical
+        except AttributeError:
+            return None
+
+    @property
+    def rf_vis(self):
+        try:
+            return self.photopic.reflectance_front.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def rf_vis_dir_dif(self):
+        try:
+            return self.photopic.reflectance_front.direct_diffuse
+        except AttributeError:
+            return None
+
+    @property
+    def rf_vis_dir_hem(self):
+        try:
+            return self.photopic.reflectance_front.direct_hemispherical
+        except AttributeError:
+            return None
+
+    @property
+    def rb_vis(self):
+        try:
+            return self.photopic.reflectance_back.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def rb_vis_dir_dif(self):
+        try:
+            return self.photopic.reflectance_back.direct_diffuse
+        except AttributeError:
+            return None
+
+    @property
+    def rb_vis_dir_hem(self):
+        try:
+            return self.photopic.reflectance_back.direct_hemispherical
+        except AttributeError:
+            return None
+
+    @property
+    def tf_tuv(self):
+        try:
+            return self.tuv.reflectance_back.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def tf_spf(self):
+        try:
+            return self.spf.reflectance_back.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def tf_tdw(self):
+        try:
+            return self.tdw.reflectance_back.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def tf_tkr(self):
+        try:
+            return self.tkr.reflectance_back.direct_direct
+        except AttributeError:
+            return None
+
+    @property
+    def tf_ciex(self):
+        try:
+            return self.color.transmittance_front.direct_direct.trichromatic.x
+        except AttributeError:
+            return None
+
+    @property
+    def tf_ciey(self):
+        try:
+            return self.color.transmittance_front.direct_direct.trichromatic.y
+        except AttributeError:
+            return None
+
+    @property
+    def tf_ciez(self):
+        try:
+            return self.color.transmittance_front.direct_direct.trichromatic.z
+        except AttributeError:
+            return None
+
+    @property
+    def rf_ciex(self):
+        try:
+            return self.color.reflectance_front.direct_direct.trichromatic.x
+        except AttributeError:
+            return None
+
+    @property
+    def rf_ciey(self):
+        try:
+            return self.color.reflectance_front.direct_direct.trichromatic.y
+        except AttributeError:
+            return None
+
+    @property
+    def rf_ciez(self):
+        try:
+            return self.color.reflectance_front.direct_direct.trichromatic.z
+        except AttributeError:
+            return None
+
+    @property
+    def rb_ciex(self):
+        try:
+            return self.color.reflectance_back.direct_direct.trichromatic.x
+        except AttributeError:
+            return None
+
+    @property
+    def rb_ciey(self):
+        try:
+            return self.color.reflectance_back.direct_direct.trichromatic.y
+        except AttributeError:
+            return None
+
+    @property
+    def rb_ciez(self):
+        try:
+            return self.color.reflectance_back.direct_direct.trichromatic.z
+        except AttributeError:
+            return None
+
+    @property
+    def tf_r(self):
+        try:
+            return self.color.transmittance_front.direct_direct.rgb.r
+        except AttributeError:
+            return None
+
+    @property
+    def tf_b(self):
+        try:
+            return self.color.transmittance_front.direct_direct.rgb.g
+        except AttributeError:
+            return None
+
+    @property
+    def tf_g(self):
+        try:
+            return self.color.transmittance_front.direct_direct.rgb.b
+        except AttributeError:
+            return None
+
+    @property
+    def rf_r(self):
+        try:
+            return self.color.reflectance_front.direct_direct.rgb.r
+        except AttributeError:
+            return None
+
+    @property
+    def rf_b(self):
+        try:
+            return self.color.reflectance_front.direct_direct.rgb.g
+        except AttributeError:
+            return None
+
+    @property
+    def rf_g(self):
+        try:
+            return self.color.reflectance_front.direct_direct.rgb.b
+        except AttributeError:
+            return None
+
+    @property
+    def rb_r(self):
+        try:
+            return self.color.reflectance_back.direct_direct.rgb.r
+        except AttributeError:
+            return None
+
+    @property
+    def rb_b(self):
+        try:
+            return self.color.reflectance_back.direct_direct.rgb.g
+        except AttributeError:
+            return None
+
+    @property
+    def rb_g(self):
+        try:
+            return self.color.reflectance_back.direct_direct.rgb.b
+        except AttributeError:
+            return None
+
+    @property
+    def tir_front(self) -> Optional[str]:
+        """
+        Returns the front TIR.
+
+        Returns:
+
+        """
+        try:
+            return self.thermal_ir.transmittance_front
+        except AttributeError:
+            return None
+
+    @property
+    def tir_back(self) -> Optional[str]:
+        """
+        Returns the back TIR.
+
+        Returns:
+
+        """
+        try:
+            return self.thermal_ir.transmittance_back
+        except AttributeError:
+            return None
+
+    @property
+    def emissivity_front(self) -> Optional[str]:
+        """
+        Returns the front emissivity.
+
+        Returns:
+
+        """
+        try:
+            return self.thermal_ir.emissivity_front_hemispheric
+        except AttributeError:
+            return None
+
+    @property
+    def emissivity_back(self) -> Optional[str]:
+        """
+        Returns the back emissivity.
+
+        Returns:
+
+        """
+        try:
+            return self.thermal_ir.emissivity_back_hemispheric
+        except AttributeError:
+            return None
+
+
+class IntegratedSpectralAveragesSummaryValuesFactory:
+
+    @classmethod
+    def create(cls) -> IntegratedSpectralAveragesSummaryValues:
+        """
+        Create a fully initialized instance of IntegratedSpectralAveragesSummaryValues
+        """
+
+        summary = IntegratedSpectralAveragesSummaryValues()
+        summary.solar = OpticalStandardMethodResultsFactory.create()
+        summary.photopic = OpticalStandardMethodResultsFactory.create()
+        summary.thermal_ir = ThermalIRResults()
+        summary.tuv = OpticalStandardMethodResultsFactory.create()
+        summary.spf = OpticalStandardMethodResultsFactory.create()
+        summary.tdw = OpticalStandardMethodResultsFactory.create()
+        summary.tkr = OpticalStandardMethodResultsFactory.create()
+        summary.color = OpticalColorResultsFactory.create()
+        return summary
