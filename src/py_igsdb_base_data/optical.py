@@ -257,11 +257,7 @@ class OpticalColorFluxResultsFactory:
 @dataclass_json
 @dataclass
 class IntegratedSpectralAveragesSummaryValues:
-    # Not required, but if set describes what standard
-    # was used to generate values contained in this dataclass
-    # String should be defined in CalculationStandardName Enum.
-    # (In Checkertool the standard used for the generation of these values
-    # is also saved in a parent model.)
+
     solar: typing.Optional[OpticalStandardMethodResults] = None
     photopic: typing.Optional[OpticalStandardMethodResults] = None
     thermal_ir: typing.Optional[ThermalIRResults] = None
