@@ -46,6 +46,42 @@ class OpticalProperties:
 
 
 @dataclass
+class WavelengthMeasurement:
+    tf: Optional[float] = None
+    tb: Optional[float] = None
+    rf: Optional[float] = None
+    rb: Optional[float] = None
+
+
+@dataclass
+class WavelengthMeasurementSet:
+    w: float = 0
+    specular: Optional[WavelengthMeasurement] = None
+    diffuse: Optional[WavelengthMeasurement] = None
+
+
+@dataclass
+class AngleBlock:
+    incidence_angle: int = 0
+    num_wavelengths: int = 0
+
+    # The shape of the dictionaries in this list is defined
+    # above in WavelengthMeasurementSet.
+    # However, casting to WavelengthMeasurementSet objects would be too
+    # time intensive when we use the asdict() method. So for now we're
+    # just leaving as a list of raw dictionaries.
+    # wavelength_data: typing.List[WavelengthMeasurementSet] = field(default_factory=list)
+
+    wavelength_data: typing.List[dict] = field(default_factory=list)
+
+
+@dataclass
+class OpticalData:
+    number_incidence_angles: Optional[int] = None
+    angle_blocks: typing.List[AngleBlock] = field(default_factory=list)
+
+
+@dataclass
 class OpticalProperties:
     optical_data_type: str = OpticalDataType.DISCRETE.name
     incidence_angular_resolution_type: str = AngularResolutionType.DIRECT.name
