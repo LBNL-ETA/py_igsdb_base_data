@@ -36,15 +36,6 @@ class AngularResolutionType(Enum):
     BSDF = "BSDF"
 
 
-@dataclass_json
-@dataclass
-class OpticalProperties:
-    optical_data_type: str = OpticalDataType.DISCRETE.name
-    incidence_angular_resolution_type: str = AngularResolutionType.DIRECT.name
-    outgoing_angular_resolution_type: str = AngularResolutionType.DIRECT.name
-    optical_data: Dict = field(default_factory=dict)
-
-
 @dataclass
 class WavelengthMeasurement:
     tf: Optional[float] = None
@@ -60,33 +51,46 @@ class WavelengthMeasurementSet:
     diffuse: Optional[WavelengthMeasurement] = None
 
 
+@dataclass_json
 @dataclass
 class AngleBlock:
     incidence_angle: int = 0
     num_wavelengths: int = 0
 
-    # The shape of the dictionaries in this list is defined
+    # The shape of the dictionaries in the wavelength_data List is defined
     # above in WavelengthMeasurementSet.
     # However, casting to WavelengthMeasurementSet objects would be too
     # time intensive when we use the asdict() method. So for now we're
     # just leaving as a list of raw dictionaries.
+    # ...so we don't use a typed list like this:
     # wavelength_data: typing.List[WavelengthMeasurementSet] = field(default_factory=list)
 
     wavelength_data: typing.List[dict] = field(default_factory=list)
 
 
+@dataclass_json
+@dataclass
+class OpticalProperties:
+    optical_data_type: str = OpticalDataType.DISCRETE.name
+    incidence_angular_resolution_type: str = AngularResolutionType.DIRECT.name
+    outgoing_angular_resolution_type: str = AngularResolutionType.DIRECT.name
+    optical_data: Dict = field(default_factory=dict)
+
+
+@dataclass_json
 @dataclass
 class OpticalData:
     number_incidence_angles: Optional[int] = None
     angle_blocks: typing.List[AngleBlock] = field(default_factory=list)
 
 
+@dataclass_json
 @dataclass
 class OpticalProperties:
     optical_data_type: str = OpticalDataType.DISCRETE.name
     incidence_angular_resolution_type: str = AngularResolutionType.DIRECT.name
     outgoing_angular_resolution_type: str = AngularResolutionType.DIRECT.name
-    optical_data: dict = None
+    optical_data: Optional[OpticalData] = None
 
 
 @dataclass
@@ -257,7 +261,6 @@ class OpticalColorFluxResultsFactory:
 @dataclass_json
 @dataclass
 class IntegratedSpectralAveragesSummaryValues:
-
     solar: typing.Optional[OpticalStandardMethodResults] = None
     photopic: typing.Optional[OpticalStandardMethodResults] = None
     thermal_ir: typing.Optional[ThermalIRResults] = None
