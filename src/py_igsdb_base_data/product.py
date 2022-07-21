@@ -256,11 +256,24 @@ class BaseGeometry:
 @dataclass_json
 @dataclass
 class BlindGeometry(BaseGeometry):
+    """
+    Geometry definition for ven blinds.
+    """
+
+    # Units: mm
     slat_width: Optional[str] = None
+
+    # Units: mm
     slat_spacing: Optional[str] = None
-    slat_tilt: Optional[str] = None
+
+    # Units: mm
     slat_curvature: Optional[str] = None
-    n_segments: Optional[int] = None
+
+    slat_tilt: Optional[str] = None
+
+    # Segments are used to represent curvature
+    # (Defaults to 5)
+    n_segments: Optional[int] = 5
 
 
 @dataclass_json

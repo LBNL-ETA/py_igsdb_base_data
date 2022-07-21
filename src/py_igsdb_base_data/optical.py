@@ -88,8 +88,13 @@ class OpticalData:
 @dataclass
 class OpticalProperties:
     optical_data_type: str = OpticalDataType.DISCRETE.name
+
     incidence_angular_resolution_type: str = AngularResolutionType.DIRECT.name
+
+    # This value is only used if outgoing doesn't use wavelength data.
+    # (If this value is defined and wavelength data is defined, this value is ignored.)
     outgoing_angular_resolution_type: str = AngularResolutionType.DIRECT.name
+
     optical_data: Optional[OpticalData] = None
 
 
