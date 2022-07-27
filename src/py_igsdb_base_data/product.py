@@ -141,8 +141,6 @@ GLAZING_SUBTYPES = [
     ProductSubtype.COATING,
     ProductSubtype.APPLIED_FILM,
     ProductSubtype.FILM,
-    ProductSubtype.FRITTED_GLASS,
-    ProductSubtype.CHROMOGENIC,
 ]
 
 GLAZING_SUBTYPE_NAMES = [item.name for item in GLAZING_SUBTYPES]
@@ -161,7 +159,11 @@ SHADING_SUBTYPES = [
     ProductSubtype.ROMAN_SHADE,
 
     # 'ShadeMaterial' subtypes
-    ProductSubtype.SHADE_MATERIAL
+    ProductSubtype.SHADE_MATERIAL,
+
+    # Diffusing hybrids
+    ProductSubtype.FRITTED_GLASS,
+    ProductSubtype.CHROMOGENIC
 ]
 
 # Subset of shading subtypes.
