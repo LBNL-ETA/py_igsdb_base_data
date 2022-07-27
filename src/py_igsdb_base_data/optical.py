@@ -25,15 +25,10 @@ INCIDENCE_ANGULAR_RESOLUTION_TYPES = [
 
 OUTGOING_ANGULAR_RESOLUTION_TYPES = [
     AngularResolutionType.DIRECT,
+    AngularResolutionType.DIFFUSE,
+    AngularResolutionType.DIRECT_DIFFUSE,
     AngularResolutionType.BSDF
 ]
-
-
-class AngularResolutionType(Enum):
-    DIRECT = "Direct"
-    DIRECT_DIFFUSE = "Direct / Diffuse"
-    DIFFUSE_DIFFUSE = "Diffuse / Diffuse"
-    BSDF = "BSDF"
 
 
 @dataclass
