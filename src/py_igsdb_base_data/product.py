@@ -163,6 +163,9 @@ SHADING_SUBTYPES = [
 
     # Diffusing hybrids
     ProductSubtype.FRITTED_GLASS,
+    ProductSubtype.ACID_ETCHED_GLASS,
+    ProductSubtype.SANDBLASTED_GLASS,
+    ProductSubtype.FRITTED_GLASS,
     ProductSubtype.CHROMOGENIC
 ]
 
