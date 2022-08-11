@@ -293,15 +293,21 @@ class VerticalLouverGeometry(BlindGeometry):
     pass
 
 
+class PerforatedScreenGeometryType(Enum):
+    CIRCULAR = 0
+    SQUARE = 1
+    RECTANGLE = 2
+
+
 @dataclass_json
 @dataclass
 class PerforatedScreenGeometry(BaseGeometry):
     """
     Defines the geometric properties of a Perforated screen.
     Type indicates shape of perforations:
+    0 : circular
     1 : square
-    2 : rectangular
-    3 : circular
+    2 : rectangle
     """
 
     type: Optional[int] = None
