@@ -296,11 +296,23 @@ class VerticalLouverGeometry(BlindGeometry):
 @dataclass_json
 @dataclass
 class PerforatedScreenGeometry(BaseGeometry):
+    """
+    Defines the geometric properties of a Perforated screen.
+    Type indicates shape of perforations:
+    1 : square
+    2 : rectangular
+    3 : circular
+    """
+
+    type: Optional[int] = None
+
+    # dim_x is "radius" when type = 3
     dim_x: Optional[str] = None
+    # dim_y is not used when type = 1 or 3
     dim_y: Optional[str] = None
+
     spacing_x: Optional[str] = None
     spacing_y: Optional[str] = None
-    type: Optional[int] = None
 
 
 @dataclass_json
