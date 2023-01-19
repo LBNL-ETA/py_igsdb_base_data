@@ -650,7 +650,8 @@ class BaseProduct:
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
         if self.physical_properties and self.physical_properties.predefined_tir_back:
-            return self.physical_properties.predefined_emissivity_back
+            return self.physical_properties.predefined_tir_back
+
         return None
 
     def get_emissivity_front(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
@@ -678,7 +679,7 @@ class BaseProduct:
 
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
-        if self.physical_properties and self.physical_properties.predefined_emissivity_front:
+        if self.physical_properties and self.physical_properties.emissivity_back_hemispheric:
             return self.physical_properties.predefined_emissivity_back
 
         return None
