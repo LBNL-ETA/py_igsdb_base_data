@@ -626,13 +626,14 @@ class BaseProduct:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
-                try:
-                    value = summary.summary_values.thermal_ir.transmittance_front
-                    if value:
-                        return value
-                except Exception as e:
-                    # not defined
-                    pass
+                if summary.calculation_standard == calculation_standard_name:
+                    try:
+                        value = summary.summary_values.thermal_ir.transmittance_front
+                        if value:
+                            return value
+                    except Exception as e:
+                        # not defined
+                        pass
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
         if self.physical_properties and self.physical_properties.predefined_tir_front:
