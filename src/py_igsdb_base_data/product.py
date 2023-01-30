@@ -626,15 +626,16 @@ class BaseProduct:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
-                if summary.calculation_standard == calculation_standard_name and \
-                        summary.summary_values and \
-                        summary.summary_values.thermal_ir and \
-                        summary.summary_values.thermal_ir.transmittance_front:
-                    return summary.summary_values.thermal_ir.transmittance_front
-
+                try:
+                    value = summary.summary_values.thermal_ir.transmittance_front
+                    if value:
+                        return value
+                except Exception as e:
+                    # not defined
+                    pass
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
-        if self.physical_properties and self.physical_properties.predefined_emissivity_front:
+        if self.physical_properties and self.physical_properties.predefined_tir_front:
             return self.physical_properties.predefined_tir_front
         return None
 
@@ -643,12 +644,13 @@ class BaseProduct:
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
                 if summary.calculation_standard == calculation_standard_name:
-                    if summary.calculation_standard == calculation_standard_name and \
-                            summary.summary_values and \
-                            summary.summary_values.thermal_ir and \
-                            summary.summary_values.thermal_ir.transmittance_back:
-                        return summary.summary_values.thermal_ir.transmittance_back
-
+                    try:
+                        value = summary.summary_values.thermal_ir.transmittance_back
+                        if value:
+                            return value
+                    except Exception as e:
+                        # not defined
+                        pass
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
         if self.physical_properties and self.physical_properties.predefined_tir_back:
@@ -660,27 +662,34 @@ class BaseProduct:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
-                if summary.calculation_standard == calculation_standard_name and \
-                        summary.summary_values and \
-                        summary.summary_values.thermal_ir and \
-                        summary.summary_values.thermal_ir.emissivity_front_hemispheric:
-                    return summary.summary_values.thermal_ir.emissivity_front_hemispheric
+                if summary.calculation_standard == calculation_standard_name:
+                    try:
+                        value = summary.summary_values.thermal_ir.emissivity_front_hemispheric
+                        if value:
+                            return value
+                    except Exception as e:
+                        # not defined
+                        pass
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
         if self.physical_properties and self.physical_properties.predefined_emissivity_front:
             return self.physical_properties.predefined_emissivity_front
+
         return None
 
     def get_emissivity_back(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
-                if summary.calculation_standard == calculation_standard_name and \
-                        summary.summary_values and \
-                        summary.summary_values.thermal_ir and \
-                        summary.summary_values.thermal_ir.emissivity_back_hemispheric:
-                    return summary.summary_values.thermal_ir.emissivity_back_hemispheric
+                if summary.calculation_standard == calculation_standard_name:
+                    try:
+                        value = summary.summary_values.thermal_ir.emissivity_back_hemispheric
+                        if value:
+                            return value
 
+                    except Exception as e:
+                        # not defined
+                        pass
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
         if self.physical_properties and self.physical_properties.emissivity_back_hemispheric:
