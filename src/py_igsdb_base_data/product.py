@@ -628,7 +628,8 @@ class BaseProduct:
             for summary in self.integrated_spectral_averages_summaries:
                 if summary.calculation_standard == calculation_standard_name and \
                         summary.summary_values and \
-                        summary.summary_values.thermal_ir:
+                        summary.summary_values.thermal_ir and \
+                        summary.summary_values.thermal_ir.transmittance_front:
                     return summary.summary_values.thermal_ir.transmittance_front
 
         # If we don't have a calculated value, we might have a 'user defined' value (from
@@ -644,7 +645,8 @@ class BaseProduct:
                 if summary.calculation_standard == calculation_standard_name:
                     if summary.calculation_standard == calculation_standard_name and \
                             summary.summary_values and \
-                            summary.summary_values.thermal_ir:
+                            summary.summary_values.thermal_ir and \
+                            summary.summary_values.thermal_ir.transmittance_back:
                         return summary.summary_values.thermal_ir.transmittance_back
 
         # If we don't have a calculated value, we might have a 'user defined' value (from
