@@ -692,7 +692,7 @@ class BaseProduct:
                         pass
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
-        if self.physical_properties and self.physical_properties.emissivity_back_hemispheric:
+        if self.physical_properties and self.physical_properties.predefined_emissivity_back:
             return self.physical_properties.predefined_emissivity_back
 
         return None
