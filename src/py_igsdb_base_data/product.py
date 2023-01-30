@@ -662,7 +662,8 @@ class BaseProduct:
             for summary in self.integrated_spectral_averages_summaries:
                 if summary.calculation_standard == calculation_standard_name and \
                         summary.summary_values and \
-                        summary.summary_values.thermal_ir:
+                        summary.summary_values.thermal_ir and \
+                        summary.summary_values.thermal_ir.emissivity_front_hemispheric:
                     return summary.summary_values.thermal_ir.emissivity_front_hemispheric
         # If we don't have a calculated value, we might have a 'user defined' value (from
         # a header line in submission file). If so, return that...
@@ -676,7 +677,8 @@ class BaseProduct:
             for summary in self.integrated_spectral_averages_summaries:
                 if summary.calculation_standard == calculation_standard_name and \
                         summary.summary_values and \
-                        summary.summary_values.thermal_ir:
+                        summary.summary_values.thermal_ir and \
+                        summary.summary_values.thermal_ir.emissivity_back_hemispheric:
                     return summary.summary_values.thermal_ir.emissivity_back_hemispheric
 
         # If we don't have a calculated value, we might have a 'user defined' value (from
