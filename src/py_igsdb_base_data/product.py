@@ -629,7 +629,7 @@ class BaseProduct:
                 if summary.calculation_standard == calculation_standard_name:
                     try:
                         value = summary.summary_values.thermal_ir.transmittance_front
-                        if value:
+                        if value is not None:
                             return value
                     except Exception as e:
                         # not defined
@@ -647,7 +647,7 @@ class BaseProduct:
                 if summary.calculation_standard == calculation_standard_name:
                     try:
                         value = summary.summary_values.thermal_ir.transmittance_back
-                        if value:
+                        if value is not None:
                             return value
                     except Exception as e:
                         # not defined
@@ -666,7 +666,7 @@ class BaseProduct:
                 if summary.calculation_standard == calculation_standard_name:
                     try:
                         value = summary.summary_values.thermal_ir.emissivity_front_hemispheric
-                        if value:
+                        if value is not None:
                             return value
                     except Exception as e:
                         # not defined
@@ -685,9 +685,8 @@ class BaseProduct:
                 if summary.calculation_standard == calculation_standard_name:
                     try:
                         value = summary.summary_values.thermal_ir.emissivity_back_hemispheric
-                        if value:
+                        if value is not None:
                             return value
-
                     except Exception as e:
                         # not defined
                         pass
