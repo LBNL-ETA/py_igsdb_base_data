@@ -634,10 +634,10 @@ class BaseProduct:
                     except Exception as e:
                         # not defined
                         pass
-        # If we don't have a calculated value, we might have a 'user defined' value (from
-        # a header line in submission file). If so, return that...
-        if self.physical_properties and self.physical_properties.predefined_tir_front:
+        # If we don't have a calculated value, return a 'user defined' value, if any.
+        if self.physical_properties:
             return self.physical_properties.predefined_tir_front
+
         return None
 
     def get_tir_back(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
@@ -652,9 +652,8 @@ class BaseProduct:
                     except Exception as e:
                         # not defined
                         pass
-        # If we don't have a calculated value, we might have a 'user defined' value (from
-        # a header line in submission file). If so, return that...
-        if self.physical_properties and self.physical_properties.predefined_tir_back:
+        # If we don't have a calculated value, return a 'user defined' value, if any.
+        if self.physical_properties:
             return self.physical_properties.predefined_tir_back
 
         return None
@@ -671,9 +670,8 @@ class BaseProduct:
                     except Exception as e:
                         # not defined
                         pass
-        # If we don't have a calculated value, we might have a 'user defined' value (from
-        # a header line in submission file). If so, return that...
-        if self.physical_properties and self.physical_properties.predefined_emissivity_front:
+        # If we don't have a calculated value, return a 'user defined' value, if any.
+        if self.physical_properties:
             return self.physical_properties.predefined_emissivity_front
 
         return None
@@ -690,9 +688,8 @@ class BaseProduct:
                     except Exception as e:
                         # not defined
                         pass
-        # If we don't have a calculated value, we might have a 'user defined' value (from
-        # a header line in submission file). If so, return that...
-        if self.physical_properties and self.physical_properties.predefined_emissivity_back:
+        # If we don't have a calculated value, return a 'user defined' value, if any.
+        if self.physical_properties:
             return self.physical_properties.predefined_emissivity_back
 
         return None
