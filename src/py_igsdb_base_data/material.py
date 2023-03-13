@@ -34,4 +34,4 @@ class MaterialBulkProperties:
     youngs_modulus: Optional[float] = None
     poissons_ratio: Optional[float] = None
     elasticity: Optional[float] = None
-    moisture_properties: Dict = field(default_factory=dict)
+    moisture_properties: Optional[Dict] = field(default_factory=dict)
