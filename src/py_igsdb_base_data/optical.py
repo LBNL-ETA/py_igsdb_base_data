@@ -95,11 +95,11 @@ class OpticalProperties:
 
 @dataclass
 class OpticalStandardMethodFluxResults:
-    direct_direct: float = None  # "Specular" in CGDB ShadeMaterial
-    direct_diffuse: float = None  # "Diffuse" in CGDB ShadeMaterial
-    direct_hemispherical: float = None
-    diffuse_diffuse: float = None
-    matrix: typing.List[typing.List[float]] = None
+    direct_direct: Optional[float] = None  # "Specular" in CGDB ShadeMaterial
+    direct_diffuse: Optional[float] = None  # "Diffuse" in CGDB ShadeMaterial
+    direct_hemispherical: Optional[float] = None
+    diffuse_diffuse: Optional[float] = None
+    matrix: Optional[typing.List[typing.List[float]]] = None
 
 
 @dataclass
@@ -108,47 +108,47 @@ class OpticalStandardMethodResults:
     transmittance_back: OpticalStandardMethodFluxResults = None
     reflectance_front: OpticalStandardMethodFluxResults = None
     reflectance_back: OpticalStandardMethodFluxResults = None
-    absorptance_front_direct: float = None
-    absorptance_back_direct: float = None
-    absorptance_front_hemispheric: float = None
-    absorptance_back_hemispheric: float = None
-    error = None
+    absorptance_front_direct: Optional[float] = None
+    absorptance_back_direct: Optional[float] = None
+    absorptance_front_hemispheric: Optional[float] = None
+    absorptance_back_hemispheric: Optional[float] = None
+    error: Optional[str] = None
 
 
 @dataclass
 class ThermalIRResults:
-    transmittance_front_diffuse_diffuse: typing.Optional[float] = None
-    transmittance_back_diffuse_diffuse: typing.Optional[float] = None
-    absorptance_front_hemispheric: typing.Optional[float] = None
-    absorptance_back_hemispheric: typing.Optional[float] = None
+    transmittance_front_diffuse_diffuse: Optional[float] = None
+    transmittance_back_diffuse_diffuse: Optional[float] = None
+    absorptance_front_hemispheric: Optional[float] = None
+    absorptance_back_hemispheric: Optional[float] = None
 
     error = None
 
     # Shortcut properties...
 
     @property
-    def emissivity_front_hemispheric(self) -> typing.Optional[float]:
+    def emissivity_front_hemispheric(self) -> Optional[float]:
         if self.absorptance_front_hemispheric:
             return self.absorptance_front_hemispheric
         else:
             return None
 
     @property
-    def emissivity_back_hemispheric(self) -> typing.Optional[float]:
+    def emissivity_back_hemispheric(self) -> Optional[float]:
         if self.absorptance_back_hemispheric:
             return self.absorptance_back_hemispheric
         else:
             return None
 
     @property
-    def transmittance_front(self) -> typing.Optional[float]:
+    def transmittance_front(self) -> Optional[float]:
         if self.transmittance_front_diffuse_diffuse:
             return self.transmittance_front_diffuse_diffuse
         else:
             return None
 
     @property
-    def transmittance_back(self) -> typing.Optional[float]:
+    def transmittance_back(self) -> Optional[float]:
         if self.transmittance_back_diffuse_diffuse:
             return self.transmittance_back_diffuse_diffuse
         else:
@@ -157,46 +157,46 @@ class ThermalIRResults:
 
 @dataclass
 class TrichromaticResult:
-    x: typing.Optional[float] = None
-    y: typing.Optional[float] = None
-    z: typing.Optional[float] = None
+    x: Optional[float] = None
+    y: Optional[float] = None
+    z: Optional[float] = None
 
 
 @dataclass
 class LabResult:
-    l: typing.Optional[float] = None
-    a: typing.Optional[float] = None
-    b: typing.Optional[float] = None
+    l: Optional[float] = None
+    a: Optional[float] = None
+    b: Optional[float] = None
 
 
 @dataclass
 class RGBResult:
-    r: typing.Optional[float] = None
-    g: typing.Optional[float] = None
-    b: typing.Optional[float] = None
+    r: Optional[float] = None
+    g: Optional[float] = None
+    b: Optional[float] = None
 
 
 @dataclass
 class OpticalColorResult:
-    trichromatic: typing.Optional[TrichromaticResult] = None
-    lab: typing.Optional[LabResult] = None
-    rgb: typing.Optional[RGBResult] = None
+    trichromatic: Optional[TrichromaticResult] = None
+    lab: Optional[LabResult] = None
+    rgb: Optional[RGBResult] = None
 
 
 @dataclass
 class OpticalColorFluxResults:
-    direct_direct: typing.Optional[OpticalColorResult] = None
-    direct_diffuse: typing.Optional[OpticalColorResult] = None
-    direct_hemispherical: typing.Optional[OpticalColorResult] = None
-    diffuse_diffuse: typing.Optional[OpticalColorResult] = None
+    direct_direct: Optional[OpticalColorResult] = None
+    direct_diffuse: Optional[OpticalColorResult] = None
+    direct_hemispherical: Optional[OpticalColorResult] = None
+    diffuse_diffuse: Optional[OpticalColorResult] = None
 
 
 @dataclass
 class OpticalColorResults:
-    transmittance_front: typing.Optional[OpticalColorFluxResults] = None
-    transmittance_back: typing.Optional[OpticalColorFluxResults] = None
-    reflectance_front: typing.Optional[OpticalColorFluxResults] = None
-    reflectance_back: typing.Optional[OpticalColorFluxResults] = None
+    transmittance_front: Optional[OpticalColorFluxResults] = None
+    transmittance_back: Optional[OpticalColorFluxResults] = None
+    reflectance_front: Optional[OpticalColorFluxResults] = None
+    reflectance_back: Optional[OpticalColorFluxResults] = None
     error = None
 
 
@@ -261,14 +261,14 @@ class OpticalColorFluxResultsFactory:
 @dataclass_json
 @dataclass
 class IntegratedSpectralAveragesSummaryValues:
-    solar: typing.Optional[OpticalStandardMethodResults] = None
-    photopic: typing.Optional[OpticalStandardMethodResults] = None
-    thermal_ir: typing.Optional[ThermalIRResults] = None
-    tuv: typing.Optional[OpticalStandardMethodResults] = None
-    spf: typing.Optional[OpticalStandardMethodResults] = None
-    tdw: typing.Optional[OpticalStandardMethodResults] = None
-    tkr: typing.Optional[OpticalStandardMethodResults] = None
-    color: typing.Optional[OpticalColorResults] = None
+    solar: Optional[OpticalStandardMethodResults] = None
+    photopic: Optional[OpticalStandardMethodResults] = None
+    thermal_ir: Optional[ThermalIRResults] = None
+    tuv: Optional[OpticalStandardMethodResults] = None
+    spf: Optional[OpticalStandardMethodResults] = None
+    tdw: Optional[OpticalStandardMethodResults] = None
+    tkr: Optional[OpticalStandardMethodResults] = None
+    color: Optional[OpticalColorResults] = None
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Convenience getters
