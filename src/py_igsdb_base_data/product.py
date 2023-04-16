@@ -362,10 +362,10 @@ class IntegratedSpectralAveragesSummary:
 class CompositionDetails:
     """
     Some composition layers have a composition_details dictionary
-    that may
-    1.  stores layer-specific that cannot be genericized and stored in
+    that may...
+    1.  store layer-specific that cannot be genericized and stored in
         the child product model, e.g. layer thickness.
-    2.  stores information from IGDB that doesn't directly translate
+    2.  store information from IGDB that doesn't directly translate
 
     """
 
@@ -381,9 +381,11 @@ class CompositionDetails:
     # coated_side_faces_exterior is a convenience property.
     # Sometimes we might not have access to the child product's
     # coated_side property, which we would need to decide if the coating
-    # faces external side. So this property can be set when that
-    # information is available for use later when it's not.
-    coated_side_faces_exterior: bool = False
+    # faces external side. For example, a LAMINATE product where the COATED
+    # child product is UNKNOWN.
+    #
+    # So this property can be set to describe which side the coated side is on.
+    coated_side_faces_exterior: Optional[bool] = None
 
 
 @dataclass_json
@@ -736,7 +738,7 @@ class BaseProduct:
             for layer_index, composition_layer in enumerate(self.composition):
                 if composition_layer.get('subtype', None) == ProductSubtype.COATED.name:
                     composition_details: CompositionDetails = composition_layer.composition_details
-                    if composition_details:
+                    if composition_details and composition_details.coated_side_faces_exterior:
                         return composition_details.coated_side_faces_exterior
         return False
 
