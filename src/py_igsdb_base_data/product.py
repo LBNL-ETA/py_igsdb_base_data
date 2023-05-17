@@ -510,6 +510,7 @@ class BaseProduct:
     # Otherwise, it comes from the GlazingID column in the GlazingProperties table.
     igdb_id: Optional[int] = None
     igdb_database_version: Optional[int] = None
+    igdb_time_created: Optional[str] = None
 
     # For legacy CGDB shading products
     cgdb_id: Optional[int] = None
