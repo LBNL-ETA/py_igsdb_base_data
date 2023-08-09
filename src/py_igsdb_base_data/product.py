@@ -486,7 +486,8 @@ class BaseProduct:
     data_file_type: Optional[str] = None
 
     # This product can be decomposed into parts
-    deconstructable: bool = False
+    # None indicates this property has not yet been determined.
+    deconstructable: Optional[bool] = None
 
     # This product is a 'reference' product, meaning it's sole purpose is
     # to get a child product into the IGSDB using reference substrates.
