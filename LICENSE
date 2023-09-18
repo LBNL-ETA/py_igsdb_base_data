@@ -44,5 +44,4 @@ distribute, and sublicense such enhancements or derivative works thereof,
 in binary and source code form.
 
 # Licenses and Acknowledgements for Incorporated Software
-pydantic           1.8.2     MIT License
-typing-extensions  3.10.0.0  Python Software Foundation License
+dataclasses-json           0.6.0     MIT License
