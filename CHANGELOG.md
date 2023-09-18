@@ -3,3 +3,4 @@
 
 ## v0.0.35
 - Added a base object for "Entity" objects.
+- Updated dependency dataclasses-json to 0.6.0
