@@ -9,7 +9,7 @@ setup(
     # tell setuptools that all packages will be under the 'src' directory and nowhere else
     package_dir={'': 'src'},
     install_requires=['pydantic>=2.1.1',
-                      'dataclasses-json==0.5.14'],
+                      'dataclasses-json==0.6.0'],
     test_suite='tests',
     zip_safe=False,
 )
