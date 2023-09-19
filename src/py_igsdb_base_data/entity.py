@@ -10,4 +10,4 @@ class BaseEntity:
     name: str
     extension: Optional[str] = None
     # ID of Entity in the IGDB
-    legacy_id: Optional[int] = None
+    igdb_id: Optional[int] = None
