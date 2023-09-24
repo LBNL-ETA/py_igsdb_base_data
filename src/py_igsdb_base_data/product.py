@@ -467,19 +467,25 @@ class ShadeLayerProperties:
     timestamp: Optional[int] = None
 
 
+@dataclass_json
+@dataclass
+class IGSDBObject:
+    token: Optional[str] = None
+    uuid: Optional[str] = None
+
+
 # NOTE: It's difficult to do getters/setters on a dataclass and handle init correctly
 # Settled on this approach: https://github.com/florimondmanca/www/issues/102#issuecomment-733947821
 
 @dataclass_json
 @dataclass
-class BaseProduct:
+class BaseProduct(IGSDBObject):
     type: Optional[str] = None
     subtype: Optional[str] = None
     token_type: Optional[str] = None
 
     units_system: str = "SI"  # or IP
     id: Optional[int] = None
-    token: Optional[str] = None
 
     product_id: Optional[int] = None
     data_file_name: Optional[str] = None
