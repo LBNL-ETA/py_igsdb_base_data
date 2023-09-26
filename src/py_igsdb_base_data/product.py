@@ -516,12 +516,12 @@ class BaseProduct(IGSDBObject):
     # value comes from the CoatingID column in the Coatings table
     # Otherwise, it comes from the GlazingID column in the GlazingProperties table.
     igdb_id: Optional[int] = None
-    igdb_database_version: Optional[int] = None
+    igdb_database_version: Optional[Decimal] = None
     igdb_time_created: Optional[str] = None
 
     # For legacy CGDB shading products
     cgdb_id: Optional[int] = None
-    cgdb_database_version: Optional[str] = None
+    cgdb_database_version: Optional[Decimal] = None
 
     # Abstract shade properties during CGDB -> IGSDB Migration.
     shade_properties: Optional[ShadeLayerProperties] = None

@@ -1,5 +1,8 @@
 # Changelog : py_igsdb_base_data 
 
+## v0.0.39
+- Use Decimals for all database_version fields
+
 ## v0.0.38
 - Created new base dataclass IGSDBObject with token and uuid properties.
 
