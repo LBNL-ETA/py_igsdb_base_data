@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data 
 
+
+## v0.0.41
+- Rename igsdb_checksum to igdb_checksum
+
 ## v0.0.40
 - Update dataclasses-json version to 0.6.1
 

@@ -535,7 +535,7 @@ class BaseProduct(IGSDBObject):
     appearance: Optional[str] = None
     acceptance: Optional[str] = None
     nfrc_id: Optional[int] = None
-    igsdb_checksum: Optional[str] = None
+    igdb_checksum: Optional[str] = None
     material_bulk_properties: Optional[MaterialBulkProperties] = None
 
     # Composition is a list of dictionaries holding
