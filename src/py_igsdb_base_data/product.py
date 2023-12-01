@@ -377,6 +377,7 @@ class CompositionDetails:
     layer_filename: Optional[str] = None
     substrate_data_file_name: Optional[str] = None
     coating_id: Optional[int] = None
+    coating_name: Optional[int] = None
 
     # coated_side_faces_exterior is a convenience property.
     # Sometimes we might not have access to the child product's

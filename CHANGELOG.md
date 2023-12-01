@@ -1,5 +1,7 @@
 # Changelog : py_igsdb_base_data 
 
+## v0.0.42
+- Add coating_name in composition details.
 
 ## v0.0.42
 - Rename CoatingID to coating_id in composition details.
