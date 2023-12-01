@@ -1,6 +1,9 @@
 # Changelog : py_igsdb_base_data 
 
 
+## v0.0.42
+- Rename CoatingID to coating_id in composition details.
+
 ## v0.0.41
 - Rename igsdb_checksum to igdb_checksum
 
