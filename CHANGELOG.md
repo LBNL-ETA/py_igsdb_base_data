@@ -1,6 +1,9 @@
 # Changelog : py_igsdb_base_data 
 
-## v0.0.42
+## v0.0.44
+- Bump requirements
+
+## v0.0.43
 - Add coating_name in composition details.
 
 ## v0.0.42
