@@ -24,6 +24,7 @@ class TestDataclass(TestCase):
 
     def test_create_empty_product(self):
         p = BaseProduct()
+        self.assertIsNone(p.type)
 
     def test_create_product(self):
         p = BaseProduct(type=ProductType.GLAZING.name,

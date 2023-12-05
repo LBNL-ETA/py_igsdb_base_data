@@ -1,6 +1,6 @@
 # Changelog : py_igsdb_base_data 
 
-## v0.0.44
+## v0.0.45
 - Bump requirements
 
 ## v0.0.43

@@ -642,7 +642,7 @@ class BaseProduct(IGSDBObject):
                         value = summary.summary_values.thermal_ir.transmittance_front
                         if value is not None:
                             return value
-                    except Exception as e:
+                    except Exception:
                         # not defined
                         pass
         # If we don't have a calculated value, return a 'user defined' value, if any.
@@ -660,7 +660,7 @@ class BaseProduct(IGSDBObject):
                         value = summary.summary_values.thermal_ir.transmittance_back
                         if value is not None:
                             return value
-                    except Exception as e:
+                    except Exception:
                         # not defined
                         pass
         # If we don't have a calculated value, return a 'user defined' value, if any.
@@ -678,7 +678,7 @@ class BaseProduct(IGSDBObject):
                         value = summary.summary_values.thermal_ir.emissivity_front_hemispheric
                         if value is not None:
                             return value
-                    except Exception as e:
+                    except Exception:
                         # not defined
                         pass
         # If we don't have a calculated value, return a 'user defined' value, if any.
@@ -696,7 +696,7 @@ class BaseProduct(IGSDBObject):
                         value = summary.summary_values.thermal_ir.emissivity_back_hemispheric
                         if value is not None:
                             return value
-                    except Exception as e:
+                    except Exception:
                         # not defined
                         pass
         # If we don't have a calculated value, return a 'user defined' value, if any.
