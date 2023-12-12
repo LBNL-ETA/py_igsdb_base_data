@@ -1,5 +1,12 @@
 # Changelog : py_igsdb_base_data 
 
+
+## v0.0.46
+- Remove extra FRITTED_GLASS in SHADING_SUBTYPES
+
+## v0.0.45
+- Bump requirements
+
 ## v0.0.44
 - Bump requirements
 

@@ -165,7 +165,6 @@ SHADING_SUBTYPES = [
     ProductSubtype.FRITTED_GLASS,
     ProductSubtype.ACID_ETCHED_GLASS,
     ProductSubtype.SANDBLASTED_GLASS,
-    ProductSubtype.FRITTED_GLASS,
     ProductSubtype.CHROMOGENIC
 ]
 
@@ -502,7 +501,7 @@ class BaseProduct(IGSDBObject):
     reference: bool = False
 
     # The official version of this product.
-    # The version is incremented each time the product is updated in the IGSDB.
+    # The version is incremented each time the product is updated in the IFGSDB.
     version: int = 1
 
     # The version of the IGSDB database.
