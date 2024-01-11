@@ -535,6 +535,7 @@ class BaseProduct(IGSDBObject):
     appearance: Optional[str] = None
     acceptance: Optional[str] = None
     nfrc_id: Optional[int] = None
+    aerc_id: Optional[int] = None
     igdb_checksum: Optional[str] = None
     material_bulk_properties: Optional[MaterialBulkProperties] = None
 
@@ -674,7 +675,7 @@ class BaseProduct(IGSDBObject):
             for summary in self.integrated_spectral_averages_summaries:
                 if summary.calculation_standard == calculation_standard_name:
                     try:
-                        value = summary.summary_values.thermal_ir.emissivity_front_hemispheric
+                        value = summary.summary_values.thermal_ir.emissivity_front
                         if value is not None:
                             return value
                     except Exception:
@@ -744,7 +745,7 @@ class BaseProduct(IGSDBObject):
             return False
         if self.composition:
             for layer_index, composition_layer in enumerate(self.composition):
-                if composition_layer.get('subtype', None) == ProductSubtype.COATED.name:
+                if composition_layer.subtype == ProductSubtype.COATED.name:
                     composition_details: CompositionDetails = composition_layer.composition_details
                     if composition_details and composition_details.coated_side_faces_exterior:
                         return composition_details.coated_side_faces_exterior

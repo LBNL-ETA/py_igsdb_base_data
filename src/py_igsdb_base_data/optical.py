@@ -108,10 +108,8 @@ class OpticalStandardMethodResults:
     transmittance_back: OpticalStandardMethodFluxResults = None
     reflectance_front: OpticalStandardMethodFluxResults = None
     reflectance_back: OpticalStandardMethodFluxResults = None
-    absorptance_front_direct: Optional[float] = None
-    absorptance_back_direct: Optional[float] = None
-    absorptance_front_hemispheric: Optional[float] = None
-    absorptance_back_hemispheric: Optional[float] = None
+    absorptance_front: Optional[float] = None
+    absorptance_back: Optional[float] = None
     error: Optional[str] = None
 
 
@@ -119,8 +117,8 @@ class OpticalStandardMethodResults:
 class ThermalIRResults:
     transmittance_front_diffuse_diffuse: Optional[float] = None
     transmittance_back_diffuse_diffuse: Optional[float] = None
-    absorptance_front_hemispheric: Optional[float] = None
-    absorptance_back_hemispheric: Optional[float] = None
+    absorptance_front: Optional[float] = None
+    absorptance_back: Optional[float] = None
 
     error = None
 
@@ -128,15 +126,15 @@ class ThermalIRResults:
 
     @property
     def emissivity_front_hemispheric(self) -> Optional[float]:
-        if self.absorptance_front_hemispheric:
-            return self.absorptance_front_hemispheric
+        if self.absorptance_front:
+            return self.absorptance_front
         else:
             return None
 
     @property
     def emissivity_back_hemispheric(self) -> Optional[float]:
-        if self.absorptance_back_hemispheric:
-            return self.absorptance_back_hemispheric
+        if self.absorptance_back:
+            return self.absorptance_back
         else:
             return None
 
@@ -630,7 +628,7 @@ class IntegratedSpectralAveragesSummaryValues:
 
         """
         try:
-            return self.thermal_ir.emissivity_back_hemispheric
+            return self.thermal_ir.emissivity_back
         except AttributeError:
             return None
 
