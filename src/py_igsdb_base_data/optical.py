@@ -117,26 +117,27 @@ class OpticalStandardMethodResults:
 
 @dataclass
 class ThermalIRResults:
+
     transmittance_front_diffuse_diffuse: Optional[float] = None
     transmittance_back_diffuse_diffuse: Optional[float] = None
-    absorptance_front_hemispheric: Optional[float] = None
-    absorptance_back_hemispheric: Optional[float] = None
+
+    emissivity_front_hemispheric: Optional[float] = None
+    emissivity_back_hemispheric: Optional[float] = None
 
     error = None
 
     # Shortcut properties...
-
     @property
-    def emissivity_front_hemispheric(self) -> Optional[float]:
-        if self.absorptance_front_hemispheric:
-            return self.absorptance_front_hemispheric
+    def absorptance_front_hemispheric(self) -> Optional[float]:
+        if self.emissivity_front_hemispheric:
+            return self.emissivity_front_hemispheric
         else:
             return None
 
     @property
-    def emissivity_back_hemispheric(self) -> Optional[float]:
-        if self.absorptance_back_hemispheric:
-            return self.absorptance_back_hemispheric
+    def absorptance_back_hemispheric(self) -> Optional[float]:
+        if self.emissivity_back_hemispheric:
+            return self.emissivity_back_hemispheric
         else:
             return None
 
