@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from datetime import datetime
 from decimal import *
 from enum import Enum
 from typing import List, Dict
@@ -536,6 +537,8 @@ class BaseProduct(IGSDBObject):
     acceptance: Optional[str] = None
     nfrc_id: Optional[int] = None
     igdb_checksum: Optional[str] = None
+    cgdb_checksum: Optional[str] = None
+    checksum_date: Optional[datetime] = None
     material_bulk_properties: Optional[MaterialBulkProperties] = None
 
     # Composition is a list of dictionaries holding
