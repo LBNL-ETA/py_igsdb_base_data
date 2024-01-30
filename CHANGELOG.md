@@ -1,5 +1,8 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.49
+
+- Consolidate igdb_time_created to mdb_time_created and use for cgdb_time_created as well.
 
 ## v0.0.48
 

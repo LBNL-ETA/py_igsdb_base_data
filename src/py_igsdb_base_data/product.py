@@ -518,7 +518,10 @@ class BaseProduct(IGSDBObject):
     # Otherwise, it comes from the GlazingID column in the GlazingProperties table.
     igdb_id: Optional[int] = None
     igdb_database_version: Optional[Decimal] = None
-    igdb_time_created: Optional[str] = None
+
+    # If this is a legacy IGDB or CGDB product,
+    # this value comes from the Time_Created column in the GlazingProperties table.
+    mdb_time_created: Optional[str] = None
 
     # For legacy CGDB shading products
     cgdb_id: Optional[int] = None
@@ -621,6 +624,18 @@ class BaseProduct(IGSDBObject):
             except KeyError:
                 raise ValueError(f"Invalid product token type: {v}")
         self._token_type = v
+
+    @property
+    def igdb_time_created(self) -> Optional[datetime]:
+        if self.type == ProductType.GLAZING.name and self.mdb_time_created:
+            return datetime.strptime(self.mdb_time_created, "%Y-%m-%d %H:%M:%S")
+        return None
+
+    @property
+    def cgdb_time_created(self) -> Optional[datetime]:
+        if self.type == ProductType.GLAZING.name and self.mdb_time_created:
+            return datetime.strptime(self.mdb_time_created, "%Y-%m-%d %H:%M:%S")
+        return None
 
     @property
     def name(self) -> Optional[str]:
