@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.50
+
+- Adding tilt choice to BlindGeometry class
+
 ## v0.0.49
 
 - Consolidate igdb_time_created to mdb_time_created and use for cgdb_time_created as well.
@@ -8,7 +12,6 @@
 
 - Added cgdb_checksum property
 - Added checksum_date (used for either igdb_checksum or cgdb_checksum, whichever is defined for a product).
-
 
 ## v0.0.47
 

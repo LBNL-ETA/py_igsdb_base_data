@@ -280,6 +280,10 @@ class BlindGeometry(BaseGeometry):
     # (Defaults to 5)
     n_segments: Optional[int] = 5
 
+    # Value be an integer or string like "CUSTOM"
+    # so declaring this field as str.
+    tilt_choice: Optional[str] = None
+
 
 @dataclass_json
 @dataclass
