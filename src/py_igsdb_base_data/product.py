@@ -39,13 +39,13 @@ class TokenType(Enum):
     # INTRAGROUP only applies to child products and therefore only
     # appears in the product composition.
     # It means the child product defined in the product composition
-    # exists as a separate submission in the same submission group.
+    # exists as a separate submission in the *SAME* submission group.
     INTRAGROUP = "intragroup"
 
     # INTERGROUP only applies to child products and therefore only
     # appears in the product composition.
     # It means the child product defined in the product composition
-    # exists as a separate submission in a different submission group.
+    # exists as a separate submission in a *DIFFERENT* submission group.
     INTERGROUP = "intergroup"
 
     def igsdb_types(self) -> List[str]:
@@ -170,7 +170,7 @@ SHADING_SUBTYPES = [
 ]
 
 # Subset of shading subtypes.
-# These ones will have a composition layer
+# These will have a composition layer.
 SHADING_LAYER_SUBTYPES = [
     ProductSubtype.VENETIAN_BLIND,
     ProductSubtype.DIFFUSING_SHADE,
@@ -198,6 +198,7 @@ PERFORATED_SCREEN   6
 CELLULAR_SHADE      7
 PLEATED_SHADE       7
 ROMAN_SHADE         7
+
 
 Note: Legacy CGDB mdb database had no way of determining if
 type 7 was cellular, pleated or roman. So when porting
