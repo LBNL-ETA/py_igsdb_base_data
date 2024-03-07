@@ -305,11 +305,13 @@ class BlindGeometry(BaseGeometry):
             self.slat_curvature = 0
             return 0
 
-        if rise > self.slat_width / 2:
-            rise = self.slat_width / 2
+        slat_width = float(self.slat_width)
+
+        if rise > slat_width / 2:
+            rise = slat_width / 2
 
         # Direct port of algoritm from WINDOW8
-        curvature = (rise * rise + self.slat_width * self.slat_width / 4) / (2 * rise)
+        curvature = (rise * rise + slat_width * slat_width / 4) / (2 * rise)
         self.slat_curvature = str(curvature)
 
         return self.slat_curvature
