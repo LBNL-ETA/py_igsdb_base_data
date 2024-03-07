@@ -287,7 +287,7 @@ class BlindGeometry(BaseGeometry):
 
     def set_curvature_from_rise(self, rise: float) -> str:
         """
-        Calculate curvature in meters from rise in meters.
+        Calculate curvature in mm from rise in mm.
 
         Sets the slat_curvature field to this value if valid.
 
