@@ -118,11 +118,12 @@ class TestBlindGeometry(TestCase):
     def test_set_curvature_from_rise(self):
 
         t = BlindGeometry()
-        t.slat_width = .0148
+        slat_width_mm = 14.8
+        t.slat_width = slat_width_mm
 
-        rise = .001175
-        t.set_curvature_from_rise(rise)
+        rise_mm = 1.175
+        t.set_curvature_from_rise(rise_mm)
 
         slat_curvature = float(t.slat_curvature)
-        self.assertAlmostEqual(slat_curvature, 0.02388962765)
+        self.assertAlmostEqual(slat_curvature, 23.88962765)
 
