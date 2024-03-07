@@ -1,3 +1,4 @@
+import logging
 from dataclasses import dataclass, field
 from datetime import datetime
 from decimal import *
@@ -10,6 +11,8 @@ from dataclasses_json import dataclass_json
 from py_igsdb_base_data.material import MaterialBulkProperties
 from py_igsdb_base_data.optical import IntegratedSpectralAveragesSummaryValues
 from py_igsdb_base_data.optical import OpticalProperties
+
+logger = logging.getLogger(__name__)
 
 
 # ENUMS
@@ -275,6 +278,7 @@ class BlindGeometry(BaseGeometry):
     # Units: mm
     slat_curvature: Optional[str] = None
 
+    # Units: degrees
     slat_tilt: Optional[str] = None
 
     # Segments are used to represent curvature
@@ -311,7 +315,10 @@ class BlindGeometry(BaseGeometry):
         curvature = (rise * rise + slat_width * slat_width / 4) / (2 * rise)
 
         if curvature > slat_width / 2:
-            raise Exception("Calculated curvature is greater than slat width / 2.")
+            # We allow the user to set a curvature beyond slat width /2,
+            # but log a warning, as this might cause an issue when e.g. this
+            # product data is used in pywincalc (which disallows curvatue > slat width / 2).
+            logger.warning("Calculated curvature is greater than slat width / 2.")
 
         self.slat_curvature = str(curvature)
 
