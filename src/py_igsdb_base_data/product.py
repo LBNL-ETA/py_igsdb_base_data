@@ -292,10 +292,10 @@ class BlindGeometry(BaseGeometry):
         Sets the slat_curvature field to this value if valid.
 
         Args:
-            rise: The rise of the slat, in meters.
+            rise: The rise of the slat, in mm.
 
         Returns:
-            The calculated curvature, in meters (also internally sets slat_curvature field).
+            The calculated curvature, in mm (also internally sets slat_curvature field).
         """
         if rise is None or rise < 0:
             raise ValueError("Rise must be a positive number.")
