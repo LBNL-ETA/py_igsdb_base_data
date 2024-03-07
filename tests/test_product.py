@@ -7,7 +7,8 @@ from unittest import TestCase
 import pytest
 from dataclasses_json import dataclass_json
 
-from py_igsdb_base_data.product import BaseProduct, PhysicalProperties, ProductType, ProductSubtype, TokenType
+from py_igsdb_base_data.product import BaseProduct, PhysicalProperties, ProductType, ProductSubtype, TokenType, \
+    BlindGeometry
 
 
 @dataclass_json
@@ -110,3 +111,18 @@ class TestDataclass(TestCase):
         with pytest.raises(ValueError):
             product = BaseProduct()
             product.token_type = "INVALID"
+
+
+class TestBlindGeometry(TestCase):
+
+    def test_set_curvature_from_rise(self):
+
+        t = BlindGeometry()
+        t.slat_width = .0148
+
+        rise = .001175
+        t.set_curvature_from_rise(rise)
+
+        slat_curvature = float(t.slat_curvature)
+        self.assertAlmostEqual(slat_curvature, 0.02388962765)
+

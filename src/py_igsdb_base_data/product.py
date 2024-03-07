@@ -287,11 +287,15 @@ class BlindGeometry(BaseGeometry):
 
     def set_curvature_from_rise(self, rise: float) -> str:
         """
-        Calculate curvature from rise.
+        Calculate curvature in meters from rise in meters.
+
         Sets the slat_curvature field to this value if valid.
 
+        Args:
+            rise: The rise of the slat, in meters.
+
         Returns:
-            The calculated curvature (also set to slat_curvature field).
+            The calculated curvature, in meters (also internally sets slat_curvature field).
         """
         if rise is None or rise < 0:
             raise ValueError("Rise must be a positive number.")
@@ -302,7 +306,7 @@ class BlindGeometry(BaseGeometry):
             rise = self.slat_width / 2
 
         # Direct port of algoritm from WINDOW8
-        curvature = (rise * rise + self.slat_width * self.slat_width / 4) / (2 * rise);
+        curvature = (rise * rise + self.slat_width * self.slat_width / 4) / (2 * rise)
         self.slat_curvature = str(curvature)
 
         return self.slat_curvature
