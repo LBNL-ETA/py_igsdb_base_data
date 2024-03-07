@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.51
+
+- Adding set_curvature_from_rise method to BlindGeometry class
+
 ## v0.0.50
 
 - Adding tilt choice to BlindGeometry class

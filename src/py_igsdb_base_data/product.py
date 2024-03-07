@@ -285,6 +285,28 @@ class BlindGeometry(BaseGeometry):
     # so declaring this field as str.
     tilt_choice: Optional[str] = None
 
+    def set_curvature_from_rise(self, rise: float) -> str:
+        """
+        Calculate curvature from rise.
+        Sets the slat_curvature field to this value if valid.
+
+        Returns:
+            The calculated curvature (also set to slat_curvature field).
+        """
+        if rise is None or rise < 0:
+            raise ValueError("Rise must be a positive number.")
+        if self.slat_width is None:
+            raise ValueError("Slat width must be defined to calculate curvature from rise.")
+
+        if rise > self.slat_width / 2:
+            rise = self.slat_width / 2
+
+        # Direct port of algoritm from WINDOW8
+        curvature = (rise * rise + self.slat_width * self.slat_width / 4) / (2 * rise);
+        self.slat_curvature = str(curvature)
+
+        return self.slat_curvature
+
 
 @dataclass_json
 @dataclass
