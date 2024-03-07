@@ -301,6 +301,9 @@ class BlindGeometry(BaseGeometry):
             raise ValueError("Rise must be a positive number.")
         if self.slat_width is None:
             raise ValueError("Slat width must be defined to calculate curvature from rise.")
+        if rise == 0:
+            self.slat_curvature = 0
+            return 0
 
         if rise > self.slat_width / 2:
             rise = self.slat_width / 2
