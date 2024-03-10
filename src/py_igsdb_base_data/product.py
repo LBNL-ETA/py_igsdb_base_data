@@ -309,16 +309,16 @@ class BlindGeometry(BaseGeometry):
             self.slat_curvature = 0
             return 0
 
+        # What follows is a direct port of algoritm from WINDOW8
+
         slat_width = float(self.slat_width)
+        max_rise = slat_width / 2
+        if rise > max_rise:
+            raise Exception(f"Rise must be equal or less than {max_rise} "
+                            f"(slat width / 2).")
 
-        # Direct port of algoritm from WINDOW8
+        # Rise value is ok. Calculate curvature from rise...
         curvature = (rise * rise + slat_width * slat_width / 4) / (2 * rise)
-
-        if curvature > slat_width / 2:
-            # We allow the user to set a curvature beyond slat width /2,
-            # but log a warning, as this might cause an issue when e.g. this
-            # product data is used in pywincalc (which disallows curvatue > slat width / 2).
-            logger.warning("Calculated curvature is greater than slat width / 2.")
 
         self.slat_curvature = str(curvature)
 
