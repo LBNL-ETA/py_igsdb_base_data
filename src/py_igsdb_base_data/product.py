@@ -124,13 +124,22 @@ class CoatedSideType(Enum):
 
 
 class DataFileType(Enum):
-    BSDF_XML = "BSDF XML"
-    THERM = "THERM"
+    """
+    The original data file that was used to
+    submit a product to Checkertool / IGSDB.
+    """
+
     IGDB_LEGACY_SUBMISSION_FILE = "IGDB_LEGACY_SUBMISSION_FILE"
     CGDB_LEGACY_SUBMISSION_FILE = "CGDB_LEGACY_SUBMISSION_FILE"
     SPD = "SPD"
+    SPREADSHEET = "SPREADSHEET"
     OTHER = "OTHER"
 
+    # These are 'legacy' file types that were used
+    # in the old IGDB database to describe shading types
+    # like rollershade and roman/pleated/cellular shades.
+    BSDF_XML = "BSDF XML"
+    THERM = "THERM"
 
 # CONSTANTS and lookups
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
