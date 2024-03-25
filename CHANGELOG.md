@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.53
+
+- Add marketing name to product 
+
 ## v0.0.52
 
 - Adding SPREADSHEET type to DataFileType
