@@ -697,13 +697,6 @@ class BaseProduct(IGSDBObject):
             return self.product_description.name
         return None
 
-    @name.setter
-    def name(self, v: str) -> None:
-        if self.product_description:
-            self.product_description.name = v
-        else:
-            self.product_description = ProductDescription(name=v)
-
     @property
     def marketing_name(self) -> Optional[str]:
         if self.product_description:
@@ -717,129 +710,146 @@ class BaseProduct(IGSDBObject):
         else:
             self.product_description = ProductDescription(marketing_name=v)
 
+    @name.setter
+    def name(self, v: str) -> None:
+        if self.product_description:
+            self.product_description.name = v
+        else:
+            self.product_description = ProductDescription(name=v)
 
-def get_tir_front(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
-    # If we have a calculated value for the given standard, return that...
-    if self.integrated_spectral_averages_summaries:
-        for summary in self.integrated_spectral_averages_summaries:
-            if summary.calculation_standard == calculation_standard_name:
-                try:
-                    value = summary.summary_values.thermal_ir.transmittance_front
-                    if value is not None:
-                        return value
-                except Exception:
-                    # not defined
-                    pass
-    # If we don't have a calculated value, return a 'user defined' value, if any.
-    if self.physical_properties:
-        return self.physical_properties.predefined_tir_front
+    @property
+    def has_thermal_ir_wavelengths(self) -> bool:
+        """
+        Returns True if the product has thermal IR wavelength data.
 
-    return None
-
-
-def get_tir_back(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
-    # If we have a calculated value for the given standard, return that...
-    if self.integrated_spectral_averages_summaries:
-        for summary in self.integrated_spectral_averages_summaries:
-            if summary.calculation_standard == calculation_standard_name:
-                try:
-                    value = summary.summary_values.thermal_ir.transmittance_back
-                    if value is not None:
-                        return value
-                except Exception:
-                    # not defined
-                    pass
-    # If we don't have a calculated value, return a 'user defined' value, if any.
-    if self.physical_properties:
-        return self.physical_properties.predefined_tir_back
-
-    return None
-
-
-def get_emissivity_front(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
-    # If we have a calculated value for the given standard, return that...
-    if self.integrated_spectral_averages_summaries:
-        for summary in self.integrated_spectral_averages_summaries:
-            if summary.calculation_standard == calculation_standard_name:
-                try:
-                    value = summary.summary_values.thermal_ir.emissivity_front_hemispheric
-                    if value is not None:
-                        return value
-                except Exception:
-                    # not defined
-                    pass
-    # If we don't have a calculated value, return a 'user defined' value, if any.
-    if self.physical_properties:
-        return self.physical_properties.predefined_emissivity_front
-
-    return None
-
-
-def get_emissivity_back(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
-    # If we have a calculated value for the given standard, return that...
-    if self.integrated_spectral_averages_summaries:
-        for summary in self.integrated_spectral_averages_summaries:
-            if summary.calculation_standard == calculation_standard_name:
-                try:
-                    value = summary.summary_values.thermal_ir.emissivity_back_hemispheric
-                    if value is not None:
-                        return value
-                except Exception:
-                    # not defined
-                    pass
-    # If we don't have a calculated value, return a 'user defined' value, if any.
-    if self.physical_properties:
-        return self.physical_properties.predefined_emissivity_back
-
-    return None
-
-
-@property
-def can_have_predefined_thermal_values(self) -> bool:
-    """
-    Historically, in the IGDB only MONOLITHIC or uncoated LAMINATE products
-    were allowed to have TIR and Emissivity set in the header of a submission file.
-    These values were stored in the IGDB database.
-
-    Factoid: The old checkertool had also stored an entry in the Ef_Source
-    and Eb_Source with a "TEXT FILE" string indicating the
-    value had come from a header line in the submission file.
-
-    This property encapsulates a check for this condition.
-
-    Returns:
-    Boolean value, true if product can have predefined values defined for emissivity or TIR.
-    """
-    if self.subtype not in [ProductSubtype.MONOLITHIC.name, ProductSubtype.LAMINATE.name]:
-        # only MONOLITHIC and uncoated LAMINATE can have predefined thermal values
-        return False
-    if self.subtype == ProductSubtype.LAMINATE.name:
-        if self.has_coating_on_surface:
-            # only an uncoated LAMINATE can have predefined thermal values
+        Returns:
+            bool
+        """
+        if not self.physical_properties:
             return False
-    return True
+        if not self.physical_properties.optical_properties:
+            return False
+        return self.physical_properties.optical_properties.has_thermal_ir_wavelengths
 
+    # GETTERS for TIR and Emissivity
 
-@property
-def has_coating_on_surface(self) -> bool:
-    """
-    This property is only for LAMINATE products.
-    Indicates whether a substrate layer is a COATED product and that
-    product's coating is on the surface of the product.
+    def get_tir_front(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
+        # If we have a calculated value for the given standard, return that...
+        if self.integrated_spectral_averages_summaries:
+            for summary in self.integrated_spectral_averages_summaries:
+                if summary.calculation_standard == calculation_standard_name:
+                    try:
+                        value = summary.summary_values.thermal_ir.transmittance_front
+                        if value is not None:
+                            return value
+                    except Exception:
+                        # not defined
+                        pass
+        # If we don't have a calculated value, return a 'user defined' value, if any.
+        if self.physical_properties:
+            return self.physical_properties.predefined_tir_front
 
-    Returns:
-    Boolean indicating whether product has a COATING on an outward facing
-    surface.
-    """
-    if self.subtype != ProductSubtype.LAMINATE.name:
+        return None
+
+    def get_tir_back(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
+        # If we have a calculated value for the given standard, return that...
+        if self.integrated_spectral_averages_summaries:
+            for summary in self.integrated_spectral_averages_summaries:
+                if summary.calculation_standard == calculation_standard_name:
+                    try:
+                        value = summary.summary_values.thermal_ir.transmittance_back
+                        if value is not None:
+                            return value
+                    except Exception:
+                        # not defined
+                        pass
+        # If we don't have a calculated value, return a 'user defined' value, if any.
+        if self.physical_properties:
+            return self.physical_properties.predefined_tir_back
+
+        return None
+
+    def get_emissivity_front(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
+        # If we have a calculated value for the given standard, return that...
+        if self.integrated_spectral_averages_summaries:
+            for summary in self.integrated_spectral_averages_summaries:
+                if summary.calculation_standard == calculation_standard_name:
+                    try:
+                        value = summary.summary_values.thermal_ir.emissivity_front_hemispheric
+                        if value is not None:
+                            return value
+                    except Exception:
+                        # not defined
+                        pass
+        # If we don't have a calculated value, return a 'user defined' value, if any.
+        if self.physical_properties:
+            return self.physical_properties.predefined_emissivity_front
+
+        return None
+
+    def get_emissivity_back(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
+        # If we have a calculated value for the given standard, return that...
+        if self.integrated_spectral_averages_summaries:
+            for summary in self.integrated_spectral_averages_summaries:
+                if summary.calculation_standard == calculation_standard_name:
+                    try:
+                        value = summary.summary_values.thermal_ir.emissivity_back_hemispheric
+                        if value is not None:
+                            return value
+                    except Exception:
+                        # not defined
+                        pass
+        # If we don't have a calculated value, return a 'user defined' value, if any.
+        if self.physical_properties:
+            return self.physical_properties.predefined_emissivity_back
+
+        return None
+
+    @property
+    def can_have_predefined_thermal_values(self) -> bool:
+        """
+        Historically, in the IGDB only MONOLITHIC or uncoated LAMINATE products
+        were allowed to have TIR and Emissivity set in the header of a submission file.
+        These values were stored in the IGDB database.
+
+        Factoid: The old checkertool had also stored an entry in the Ef_Source
+        and Eb_Source with a "TEXT FILE" string indicating the
+        value had come from a header line in the submission file.
+
+        This property encapsulates a check for this condition.
+
+        Returns:
+        Boolean value, true if product can have predefined values defined for emissivity or TIR.
+        """
+        if self.subtype not in [ProductSubtype.MONOLITHIC.name, ProductSubtype.LAMINATE.name]:
+            # only MONOLITHIC and uncoated LAMINATE can have predefined thermal values
+            return False
+        if self.subtype == ProductSubtype.LAMINATE.name:
+            if self.has_coating_on_surface:
+                # only an uncoated LAMINATE can have predefined thermal values
+                return False
+        return True
+
+    @property
+    def has_coating_on_surface(self) -> bool:
+        """
+        This property is only for LAMINATE products.
+        Indicates whether a substrate layer is a COATED product and that
+        product's coating is on the surface of the product.
+
+        Returns:
+        Boolean indicating whether product has a COATING on an outward facing
+        surface.
+        """
+        if self.subtype != ProductSubtype.LAMINATE.name:
+            return False
+        if self.composition:
+            for layer_index, composition_layer in enumerate(self.composition):
+                if composition_layer.get('subtype', None) == ProductSubtype.COATED.name:
+                    composition_details: CompositionDetails = composition_layer.composition_details
+                    if composition_details and composition_details.coated_side_faces_exterior:
+                        return composition_details.coated_side_faces_exterior
         return False
-    if self.composition:
-        for layer_index, composition_layer in enumerate(self.composition):
-            if composition_layer.get('subtype', None) == ProductSubtype.COATED.name:
-                composition_details: CompositionDetails = composition_layer.composition_details
-                if composition_details and composition_details.coated_side_faces_exterior:
-                    return composition_details.coated_side_faces_exterior
-    return False
 
 
 BaseProduct.type = property(BaseProduct.get_type, BaseProduct.set_type)

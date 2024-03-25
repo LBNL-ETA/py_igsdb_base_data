@@ -92,6 +92,24 @@ class OpticalProperties:
 
     optical_data: Optional[OpticalData] = None
 
+    @property
+    def has_thermal_ir_wavelengths(self) -> bool:
+        """
+        Returns True if the optical data has thermal IR wavelengths.
+        This is sort of expensive so probs don't want to use this
+        when e.g. listing lots of products in a datagrid.
+
+        Returns:
+            bool
+        """
+        if not self.optical_data:
+            return False
+        for angle_block in self.optical_data.angle_blocks:
+            for w_data in angle_block.wavelength_data:
+                w = float(w_data['w'])
+                if w > 2500:
+                    return True
+
 
 @dataclass
 class OpticalStandardMethodFluxResults:
@@ -117,7 +135,6 @@ class OpticalStandardMethodResults:
 
 @dataclass
 class ThermalIRResults:
-
     transmittance_front_diffuse_diffuse: Optional[float] = None
     transmittance_back_diffuse_diffuse: Optional[float] = None
 

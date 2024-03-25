@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.54
+
+- Add has_thermal_wavelength_data property to Product and OpticalProperties classes
+
 ## v0.0.53
 
 - Add marketing name to product 
