@@ -1,6 +1,6 @@
 
 # project
-dataclasses-json==0.6.3
+dataclasses-json==0.6.4
 
 # local dev
 pytest==7.4.3

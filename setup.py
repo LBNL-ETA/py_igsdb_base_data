@@ -8,7 +8,7 @@ setup(
     packages=find_packages(where='src'),
     # tell setuptools that all packages will be under the 'src' directory and nowhere else
     package_dir={'': 'src'},
-    install_requires=['dataclasses-json==0.6.3'],
+    install_requires=['dataclasses-json==0.6.4'],
     test_suite='tests',
     zip_safe=False,
 )
