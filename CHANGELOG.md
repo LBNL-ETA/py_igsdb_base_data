@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.56
+
+- Add rise property to `BlindGeometry`. Update `set_curvature_from_rise` to use instance's rise property (not argument).
+
 ## v0.0.55
 
 - Bump dependency versions

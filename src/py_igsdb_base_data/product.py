@@ -279,6 +279,8 @@ class BlindGeometry(BaseGeometry):
     Geometry definition for ven blinds.
     """
 
+    rise: Optional[str] = None
+
     # Units: mm
     slat_width: Optional[str] = None
 
@@ -299,25 +301,27 @@ class BlindGeometry(BaseGeometry):
     # so declaring this field as str.
     tilt_choice: Optional[str] = None
 
-    def set_curvature_from_rise(self, rise: float) -> str:
+    def set_curvature_from_rise(self) -> str:
         """
         Calculate curvature in mm from rise in mm.
 
         Sets the slat_curvature field to this value if valid.
 
-        Args:
-            rise: The rise of the slat, in mm.
+        IMPORTANT: The "rise" property of this instance must be set before calling this method.
 
         Returns:
             The calculated curvature, in mm (also internally sets slat_curvature field).
         """
-        if rise is None or rise < 0:
-            raise ValueError("Rise must be a positive number.")
+        if self.rise is None or self.rise == "":
+            raise ValueError("Rise must be defined before calling this method.")
+
+        if self.rise == "0":
+            self.slat_curvature = "0"
+            return "0"
+
+        rise = float(self.rise)
         if self.slat_width is None:
             raise ValueError("Slat width must be defined to calculate curvature from rise.")
-        if rise == 0:
-            self.slat_curvature = 0
-            return 0
 
         # What follows is a direct port of algoritm from WINDOW8
 
