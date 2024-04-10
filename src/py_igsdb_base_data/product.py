@@ -278,9 +278,13 @@ class BaseGeometry:
 class BlindGeometry(BaseGeometry):
     """
     Geometry definition for ven blinds.
+
+    IMPORTANT: To maintain exact precision,
+    all values are stored as strings.
+
     """
 
-    rise: Optional[str] = None
+    _rise: Optional[str] = None
 
     # Units: mm
     slat_width: Optional[str] = None
@@ -320,6 +324,10 @@ class BlindGeometry(BaseGeometry):
             self.rise = "0"
             return "0"
 
+        if float(self.slat_curvature) < 0:
+            self.rise = "0"
+            return "0"
+
         curvature = float(self.slat_curvature)
         if self.slat_width is None:
             raise ValueError("Slat width must be defined to calculate rise from curvature.")
@@ -354,6 +362,10 @@ class BlindGeometry(BaseGeometry):
             self.slat_curvature = "0"
             return "0"
 
+        if float(self.rise) < 0:
+            self.slat_curvature = "0"
+            return "0"
+
         rise = float(self.rise)
         if self.slat_width is None:
             raise ValueError("Slat width must be defined to calculate curvature from rise.")
@@ -367,7 +379,12 @@ class BlindGeometry(BaseGeometry):
                             f"(slat width / 2).")
 
         # Rise value is ok. Calculate curvature from rise...
-        curvature = (rise * rise + slat_width * slat_width / 4) / (2 * rise)
+        val = (rise * rise + slat_width * slat_width / 4) / (2 * rise)
+
+        if val < 0:
+            curvature = slat_width / 2
+        else:
+            curvature = val
 
         self.slat_curvature = str(curvature)
 

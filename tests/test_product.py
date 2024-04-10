@@ -115,15 +115,58 @@ class TestDataclass(TestCase):
 
 class TestBlindGeometry(TestCase):
 
-    def test_set_curvature_from_rise(self):
-
+    def test_set_curvature_from_rise_standard(self):
         t = BlindGeometry()
-        slat_width_mm = 14.8
-        t.slat_width = slat_width_mm
-
-        rise_mm = 1.175
-        t.set_curvature_from_rise(rise_mm)
+        t.slat_width = "10"
+        t.rise = "2.5"
+        t.set_curvature_from_rise()
 
         slat_curvature = float(t.slat_curvature)
-        self.assertAlmostEqual(slat_curvature, 23.88962765)
+        self.assertAlmostEqual(6.25, slat_curvature)
+
+    def test_set_curvature_from_rise_at_0(self):
+        t = BlindGeometry()
+        t.slat_width = "10"
+        t.rise = "0"
+        t.set_curvature_from_rise()
+
+        slat_curvature = float(t.slat_curvature)
+        self.assertAlmostEqual(0.0, slat_curvature)
+
+    def test_set_curvature_from_rise_at_negative(self):
+        t = BlindGeometry()
+        t.slat_width = "10"
+        t.rise = "-10"
+        t.set_curvature_from_rise()
+
+        slat_curvature = float(t.slat_curvature)
+        self.assertAlmostEqual(0.0, slat_curvature)
+
+
+    def test_rise_from_curvature_at_0(self):
+        t = BlindGeometry()
+        t.slat_curvature = "0"  # mm
+        t.slat_width = "10"  # mm
+        t.set_rise_from_curvature()
+
+        rise = float(t.rise)
+        self.assertAlmostEqual(0.0, rise)
+
+    def test_rise_from_curvature_at_negative(self):
+        t = BlindGeometry()
+        t.slat_curvature = "-10"  # mm
+        t.slat_width = "10"  # mm
+        t.set_rise_from_curvature()
+
+        rise = float(t.rise)
+        self.assertAlmostEqual(0.0, rise)
+
+    def test_rise_from_curvature_standard(self):
+        t = BlindGeometry()
+        t.slat_curvature = "5"  # mm
+        t.slat_width = "10"  # mm
+        t.set_rise_from_curvature()
+
+        rise = float(t.rise)
+        self.assertAlmostEqual(5.0, rise)
 
