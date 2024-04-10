@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from decimal import *
 from enum import Enum
+from math import sqrt
 from typing import List, Dict
 from typing import Optional
 
@@ -300,6 +301,41 @@ class BlindGeometry(BaseGeometry):
     # Value can be an integer or string like "CUSTOM"
     # so declaring this field as str.
     tilt_choice: Optional[str] = None
+
+    def set_rise_from_curvature(self) -> str:
+        """
+        Calculate rise in mm from curvature in mm.
+
+        Sets the rise field to this value if valid.
+
+        IMPORTANT: The "slat_curvature" property of this instance must be set before calling this method.
+
+        Returns:
+            The calculated rise, in mm (also internally sets rise field).
+        """
+        if self.slat_curvature is None or self.slat_curvature == "":
+            raise ValueError("Slat curvature must be defined before calling this method.")
+
+        if self.slat_curvature == "0":
+            self.rise = "0"
+            return "0"
+
+        curvature = float(self.slat_curvature)
+        if self.slat_width is None:
+            raise ValueError("Slat width must be defined to calculate rise from curvature.")
+
+        # What follows is a direct port of algoritm from WINDOW8
+        slat_width = float(self.slat_width)
+        val = curvature * curvature - slat_width * slat_width / 4
+        if val < 0:
+            rise = slat_width / 2
+        else:
+            r_prime = sqrt(val)
+            rise = curvature - r_prime
+
+        self.rise = str(rise)
+
+        return self.rise
 
     def set_curvature_from_rise(self) -> str:
         """
