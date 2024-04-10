@@ -324,7 +324,6 @@ class BlindGeometry(BaseGeometry):
         if self.slat_width is None:
             raise ValueError("Slat width must be defined to calculate rise from curvature.")
 
-        # What follows is a direct port of algoritm from WINDOW8
         slat_width = float(self.slat_width)
         val = curvature * curvature - slat_width * slat_width / 4
         if val < 0:

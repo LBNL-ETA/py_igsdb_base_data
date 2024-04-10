@@ -2,7 +2,9 @@
 
 ## v0.0.56
 
-- Add rise property to `BlindGeometry`. Update `set_curvature_from_rise` to use instance's rise property (not argument).
+- Add rise property to `BlindGeometry`. 
+- Update `set_curvature_from_rise` to use instance's rise property (not argument).
+- Add 'set_rise_from_curvature' method to `BlindGeometry` class.
 
 ## v0.0.55
 
@@ -14,7 +16,7 @@
 
 ## v0.0.53
 
-- Add marketing name to product 
+- Add marketing name to product
 
 ## v0.0.52
 
