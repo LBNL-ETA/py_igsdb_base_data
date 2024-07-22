@@ -1,7 +1,7 @@
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
-from decimal import *
+from decimal import Decimal
 from enum import Enum
 from math import sqrt
 from typing import List, Dict

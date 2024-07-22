@@ -142,7 +142,6 @@ class TestBlindGeometry(TestCase):
         slat_curvature = float(t.slat_curvature)
         self.assertAlmostEqual(0.0, slat_curvature)
 
-
     def test_rise_from_curvature_at_0(self):
         t = BlindGeometry()
         t.slat_curvature = "0"  # mm
@@ -169,4 +168,3 @@ class TestBlindGeometry(TestCase):
 
         rise = float(t.rise)
         self.assertAlmostEqual(5.0, rise)
-
