@@ -33,9 +33,9 @@ class TestDataclass(TestCase):
                         token='valid-monolithic-1',
                         token_type=TokenType.PUBLISHED.name,
                         data_file_name='valid_monolithic_1.abc')
-        self.assertEquals(p.type, ProductType.GLAZING.name)
-        self.assertEquals(p.subtype, ProductSubtype.MONOLITHIC.name)
-        self.assertEquals(p.token_type, TokenType.PUBLISHED.name)
+        self.assertEqual(p.type, ProductType.GLAZING.name)
+        self.assertEqual(p.subtype, ProductSubtype.MONOLITHIC.name)
+        self.assertEqual(p.token_type, TokenType.PUBLISHED.name)
 
     def test_create_product_from_dict(self):
         example_product_json = Path('tests/data/valid_monolithic_1.json')
@@ -54,11 +54,11 @@ class TestDataclass(TestCase):
         expected_subtype = original_dict['subtype']
 
         # Check dataclass against original properties.
-        self.assertEquals(product.subtype, expected_subtype)
+        self.assertEqual(product.subtype, expected_subtype)
 
         physical_properties = product.physical_properties
         # Makes sure nested data was transformed to dataclasses by dataclasses-json
-        self.assertEquals(type(physical_properties), PhysicalProperties)
+        self.assertEqual(type(physical_properties), PhysicalProperties)
 
     def test_create_product_from_json_file(self):
         example_product_json = Path('tests/data/valid_monolithic_1.json')
@@ -77,11 +77,11 @@ class TestDataclass(TestCase):
         expected_subtype = original_dict['subtype']
 
         # Check dataclass against original properties.
-        self.assertEquals(product.subtype, expected_subtype)
+        self.assertEqual(product.subtype, expected_subtype)
 
         physical_properties = product.physical_properties
         # Makes sure nested data was transformed to dataclasses by dataclasses-json
-        self.assertEquals(type(physical_properties), PhysicalProperties)
+        self.assertEqual(type(physical_properties), PhysicalProperties)
 
     def test_cannot_set_wrong_product_type(self):
         # Test init

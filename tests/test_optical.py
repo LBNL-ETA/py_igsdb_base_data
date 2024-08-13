@@ -25,4 +25,4 @@ class TestPhysicalPropertiesDataclass(TestCase):
             summary_dict = json.load(f)
 
         summary_values = IntegratedSpectralAveragesSummaryValues.from_dict(summary_dict)
-        self.assertEquals(0.5165770985449425, summary_values.solar.reflectance_back.direct_direct)
+        self.assertEqual(0.5165770985449425, summary_values.solar.reflectance_back.direct_direct)
