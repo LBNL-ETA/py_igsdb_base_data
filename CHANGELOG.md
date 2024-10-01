@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.58
+
+- Refactored BlindGeometry dataclass.
+
 ## v0.0.57
 
 - Update dependencies.

@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 # APD = Accepted Product Document, a product that has been accepted to and published in
 # the IGSDB
 
+
 class TokenType(Enum):
     # PUBLISHED means the product has been added to the IGSDB
     # and has been marked PUBLISHED
@@ -54,10 +55,7 @@ class TokenType(Enum):
 
     def igsdb_types(self) -> List[str]:
         # These types can appear in the IGSDB
-        return [
-            TokenType.PUBLISHED.name,
-            TokenType.UNDEFINED.name
-        ]
+        return [TokenType.PUBLISHED.name, TokenType.UNDEFINED.name]
 
 
 class ProductType(Enum):
@@ -161,7 +159,6 @@ GLAZING_SUBTYPES = [
 GLAZING_SUBTYPE_NAMES = [item.name for item in GLAZING_SUBTYPES]
 
 SHADING_SUBTYPES = [
-
     # 'ShadingLayer' subtypes...
     ProductSubtype.VENETIAN_BLIND,
     ProductSubtype.DIFFUSING_SHADE,
@@ -172,15 +169,13 @@ SHADING_SUBTYPES = [
     ProductSubtype.CELLULAR_SHADE,
     ProductSubtype.PLEATED_SHADE,
     ProductSubtype.ROMAN_SHADE,
-
     # 'ShadeMaterial' subtypes
     ProductSubtype.SHADE_MATERIAL,
-
     # Diffusing hybrids
     ProductSubtype.FRITTED_GLASS,
     ProductSubtype.ACID_ETCHED_GLASS,
     ProductSubtype.SANDBLASTED_GLASS,
-    ProductSubtype.CHROMOGENIC
+    ProductSubtype.CHROMOGENIC,
 ]
 
 # Subset of shading subtypes.
@@ -306,6 +301,12 @@ class BlindGeometry(BaseGeometry):
     # so declaring this field as str.
     tilt_choice: Optional[str] = None
 
+    @property
+    def rise(self) -> Optional[str]:
+        if not self._rise and self.slat_curvature:
+            self.set_rise_from_curvature()
+        return self._rise
+
     def set_rise_from_curvature(self) -> str:
         """
         Calculate rise in mm from curvature in mm.
@@ -318,19 +319,23 @@ class BlindGeometry(BaseGeometry):
             The calculated rise, in mm (also internally sets rise field).
         """
         if self.slat_curvature is None or self.slat_curvature == "":
-            raise ValueError("Slat curvature must be defined before calling this method.")
+            raise ValueError(
+                "Slat curvature must be defined before calling this method."
+            )
 
         if self.slat_curvature == "0":
-            self.rise = "0"
+            self._rise = "0"
             return "0"
 
         if float(self.slat_curvature) < 0:
-            self.rise = "0"
+            self._rise = "0"
             return "0"
 
         curvature = float(self.slat_curvature)
         if self.slat_width is None:
-            raise ValueError("Slat width must be defined to calculate rise from curvature.")
+            raise ValueError(
+                "Slat width must be defined to calculate rise from curvature."
+            )
 
         slat_width = float(self.slat_width)
         val = curvature * curvature - slat_width * slat_width / 4
@@ -340,9 +345,9 @@ class BlindGeometry(BaseGeometry):
             r_prime = sqrt(val)
             rise = curvature - r_prime
 
-        self.rise = str(rise)
+        self._rise = str(rise)
 
-        return self.rise
+        return self._rise
 
     def set_curvature_from_rise(self) -> str:
         """
@@ -355,28 +360,31 @@ class BlindGeometry(BaseGeometry):
         Returns:
             The calculated curvature, in mm (also internally sets slat_curvature field).
         """
-        if self.rise is None or self.rise == "":
+        if self._rise is None or self._rise == "":
             raise ValueError("Rise must be defined before calling this method.")
 
-        if self.rise == "0":
+        if self._rise == "0":
             self.slat_curvature = "0"
             return "0"
 
-        if float(self.rise) < 0:
+        if float(self._rise) < 0:
             self.slat_curvature = "0"
             return "0"
 
-        rise = float(self.rise)
+        rise = float(self._rise)
         if self.slat_width is None:
-            raise ValueError("Slat width must be defined to calculate curvature from rise.")
+            raise ValueError(
+                "Slat width must be defined to calculate curvature from rise."
+            )
 
         # What follows is a direct port of algoritm from WINDOW8
 
         slat_width = float(self.slat_width)
         max_rise = slat_width / 2
         if rise > max_rise:
-            raise Exception(f"Rise must be equal or less than {max_rise} "
-                            f"(slat width / 2).")
+            raise Exception(
+                f"Rise must be equal or less than {max_rise} " f"(slat width / 2)."
+            )
 
         # Rise value is ok. Calculate curvature from rise...
         val = (rise * rise + slat_width * slat_width / 4) / (2 * rise)
@@ -515,6 +523,7 @@ class NewProductDefinition:
     new_product_definition property of the composition layer.
 
     """
+
     id: Optional[int] = None
     type: Optional[str] = None
     subtype: Optional[str] = None
@@ -545,6 +554,7 @@ class ProductComposition:
     """
     A simple dataclass to represent composition layers in a Product.
     """
+
     type: Optional[str] = None
     subtype: Optional[str] = None
     token_type: Optional[str] = None
@@ -571,6 +581,7 @@ class ShadeLayerProperties:
     Holds ShadingLayer properties from CGDB
     during CGDB -> IGSDB migration.
     """
+
     shade_material_id: Optional[int] = None
     hole_area: Optional[Decimal] = None  # Float in CGDB, max six decimal places.
     bsdf_path: Optional[str] = None
@@ -587,6 +598,7 @@ class IGSDBObject:
 
 # NOTE: It's difficult to do getters/setters on a dataclass and handle init correctly
 # Settled on this approach: https://github.com/florimondmanca/www/issues/102#issuecomment-733947821
+
 
 @dataclass_json
 @dataclass
@@ -661,7 +673,9 @@ class BaseProduct(IGSDBObject):
 
     # Integrated spectral averages summaries are usually generated by Checkertool.
     # We initialize this field to an empty list.
-    integrated_spectral_averages_summaries: List[IntegratedSpectralAveragesSummary] = field(default_factory=list)
+    integrated_spectral_averages_summaries: List[IntegratedSpectralAveragesSummary] = (
+        field(default_factory=list)
+    )
 
     # The extra_data field is a catch-all for data that does not fit
     # into standard dataclasses. Right now that's just one field: interlayer_nominal_thickness
@@ -689,11 +703,15 @@ class BaseProduct(IGSDBObject):
     # database links ShadeMaterial to spectral data via the GlazingProperties database.
     glazing_id: Optional[int] = None
 
-    substrate_filename: Optional[str] = None  # The Substrate_Filename from the GlazingProperties table
+    substrate_filename: Optional[str] = (
+        None  # The Substrate_Filename from the GlazingProperties table
+    )
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
     structure_line: Optional[str] = None  # Hold on to the original structure line
-    interlayer_details: Optional[InterlayerDetails] = None  # Keep interlayer information for building composition
+    interlayer_details: Optional[InterlayerDetails] = (
+        None  # Keep interlayer information for building composition
+    )
 
     # IGSDB fields
     # The IGSDB stores the submitted product in a related model
@@ -825,7 +843,9 @@ class BaseProduct(IGSDBObject):
 
         return None
 
-    def get_emissivity_front(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
+    def get_emissivity_front(
+        self, calculation_standard_name: str = "NFRC"
+    ) -> Optional[float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
@@ -843,7 +863,9 @@ class BaseProduct(IGSDBObject):
 
         return None
 
-    def get_emissivity_back(self, calculation_standard_name: str = "NFRC") -> Optional[float]:
+    def get_emissivity_back(
+        self, calculation_standard_name: str = "NFRC"
+    ) -> Optional[float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
@@ -877,7 +899,10 @@ class BaseProduct(IGSDBObject):
         Returns:
         Boolean value, true if product can have predefined values defined for emissivity or TIR.
         """
-        if self.subtype not in [ProductSubtype.MONOLITHIC.name, ProductSubtype.LAMINATE.name]:
+        if self.subtype not in [
+            ProductSubtype.MONOLITHIC.name,
+            ProductSubtype.LAMINATE.name,
+        ]:
             # only MONOLITHIC and uncoated LAMINATE can have predefined thermal values
             return False
         if self.subtype == ProductSubtype.LAMINATE.name:
@@ -901,13 +926,20 @@ class BaseProduct(IGSDBObject):
             return False
         if self.composition:
             for layer_index, composition_layer in enumerate(self.composition):
-                if composition_layer.get('subtype', None) == ProductSubtype.COATED.name:
-                    composition_details: CompositionDetails = composition_layer.composition_details
-                    if composition_details and composition_details.coated_side_faces_exterior:
+                if composition_layer.get("subtype", None) == ProductSubtype.COATED.name:
+                    composition_details: CompositionDetails = (
+                        composition_layer.composition_details
+                    )
+                    if (
+                        composition_details
+                        and composition_details.coated_side_faces_exterior
+                    ):
                         return composition_details.coated_side_faces_exterior
         return False
 
 
 BaseProduct.type = property(BaseProduct.get_type, BaseProduct.set_type)
 BaseProduct.subtype = property(BaseProduct.get_subtype, BaseProduct.set_subtype)
-BaseProduct.token_type = property(BaseProduct.get_token_type, BaseProduct.set_token_type)
+BaseProduct.token_type = property(
+    BaseProduct.get_token_type, BaseProduct.set_token_type
+)
