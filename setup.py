@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='py_igsdb_base_data',
-    version='0.0.58',
+    version='0.0.59',
     long_description='This library contains dataclasses to assist with IGSDB-related data and operations.',
     # tell setuptools to look for any packages under 'src'
     packages=find_packages(where='src'),

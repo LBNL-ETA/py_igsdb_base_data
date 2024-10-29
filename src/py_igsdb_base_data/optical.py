@@ -651,6 +651,80 @@ class IntegratedSpectralAveragesSummaryValues:
             return self.thermal_ir.emissivity_back_hemispheric
         except AttributeError:
             return None
+        
+    def flatten(self) -> Dict:
+        """
+        Flatten the summary data to a dictionary.
+        """
+        data = {
+            "tf_sol": self.tf_sol,
+            "tf_sol_dir_dif": self.tf_sol_dir_dif,
+            "tf_sol_dir_hem": self.tf_sol_dir_hem,
+
+            "tb_sol": self.tb_sol,
+            "tb_sol_dir_dif": self.tb_sol_dir_dif,
+            "tb_sol_dir_hem": self.tb_sol_dir_hem,
+
+            "rf_sol": self.rf_sol,
+            "rf_sol_dir_dif": self.rf_sol_dir_dif,
+            "rf_sol_dir_hem": self.rf_sol_dir_hem,
+
+            "rb_sol": self.rb_sol,
+            "rb_sol_dir_dif": self.rb_sol_dir_dif,
+            "rb_sol_dir_hem": self.rb_sol_dir_hem,
+
+            "tf_vis": self.tf_vis,
+            "tf_vis_dir_dif": self.tf_vis_dir_dif,
+            "tf_vis_dir_hem": self.tf_vis_dir_hem,
+
+            "tb_vis": self.tb_vis,
+            "tb_vis_dir_dif": self.tb_vis_dir_dif,
+            "tb_vis_dir_hem": self.tb_vis_dir_hem,
+
+            "rf_vis": self.rf_vis,
+            "rf_vis_dir_dif": self.rf_vis_dir_dif,
+            "rf_vis_dir_hem": self.rf_vis_dir_hem,
+
+            "rb_vis": self.rb_vis,
+            "rb_vis_dir_dif": self.rb_vis_dir_dif,
+            "rb_vis_dir_hem": self.rb_vis_dir_hem,
+
+            "tf_tuv": self.tf_tuv,
+            "tf_spf": self.tf_spf,
+            "tf_tdw": self.tf_tdw,
+            "tf_tkr": self.tf_tkr,
+
+            "tf_ciex": self.tf_ciex,
+            "tf_ciey": self.tf_ciey,
+            "tf_ciez": self.tf_ciez,
+
+            "rf_ciex": self.rf_ciex,
+            "rf_ciey": self.rf_ciey,
+            "rf_ciez": self.rf_ciez,
+
+            "rb_ciex": self.rb_ciex,
+            "rb_ciey": self.rb_ciey,
+            "rb_ciez": self.rb_ciez,
+
+            "tf_r": self.tf_r,
+            "tf_b": self.tf_b,
+            "tf_g": self.tf_g,
+
+            "rf_r": self.rf_r,
+            "rf_b": self.rf_b,
+            "rf_g": self.rf_g,
+
+            "rb_r": self.rb_r,
+            "rb_b": self.rb_b,
+            "rb_g": self.rb_g,
+
+            "tir_front": self.tir_front,
+            "tir_back": self.tir_back,
+            "emissivity_front": self.emissivity_front,
+            "emissivity_back": self.emissivity_back
+
+        }
+        return data
 
 
 class IntegratedSpectralAveragesSummaryValuesFactory:
