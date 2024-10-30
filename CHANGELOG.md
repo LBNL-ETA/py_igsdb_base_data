@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.62
+
+- Fix bug in has_thermal_ir_wavelengths method.
+
 ## v0.0.61
 
 - Fix bugs in getters to IntegratedSpectralAveragesSummaryValues
