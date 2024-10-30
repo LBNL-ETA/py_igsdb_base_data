@@ -463,28 +463,28 @@ class IntegratedSpectralAveragesSummaryValues:
     @property
     def tf_tuv(self):
         try:
-            return self.tuv.reflectance_back.direct_direct
+            return self.tuv.transmittance_front.direct_direct
         except AttributeError:
             return None
 
     @property
     def tf_spf(self):
         try:
-            return self.spf.reflectance_back.direct_direct
+            return self.spf.transmittance_front.direct_direct
         except AttributeError:
             return None
 
     @property
     def tf_tdw(self):
         try:
-            return self.tdw.reflectance_back.direct_direct
+            return self.tdw.transmittance_front.direct_direct
         except AttributeError:
             return None
 
     @property
     def tf_tkr(self):
         try:
-            return self.tkr.reflectance_back.direct_direct
+            return self.tkr.transmittance_front.direct_direct
         except AttributeError:
             return None
 
@@ -561,14 +561,14 @@ class IntegratedSpectralAveragesSummaryValues:
     @property
     def tf_b(self):
         try:
-            return self.color.transmittance_front.direct_direct.rgb.g
+            return self.color.transmittance_front.direct_direct.rgb.b
         except AttributeError:
             return None
 
     @property
     def tf_g(self):
         try:
-            return self.color.transmittance_front.direct_direct.rgb.b
+            return self.color.transmittance_front.direct_direct.rgb.g
         except AttributeError:
             return None
 
@@ -582,14 +582,14 @@ class IntegratedSpectralAveragesSummaryValues:
     @property
     def rf_b(self):
         try:
-            return self.color.reflectance_front.direct_direct.rgb.g
+            return self.color.reflectance_front.direct_direct.rgb.b
         except AttributeError:
             return None
 
     @property
     def rf_g(self):
         try:
-            return self.color.reflectance_front.direct_direct.rgb.b
+            return self.color.reflectance_front.direct_direct.rgb.g
         except AttributeError:
             return None
 
@@ -603,14 +603,14 @@ class IntegratedSpectralAveragesSummaryValues:
     @property
     def rb_b(self):
         try:
-            return self.color.reflectance_back.direct_direct.rgb.g
+            return self.color.reflectance_back.direct_direct.rgb.b
         except AttributeError:
             return None
 
     @property
     def rb_g(self):
         try:
-            return self.color.reflectance_back.direct_direct.rgb.b
+            return self.color.reflectance_back.direct_direct.rgb.g
         except AttributeError:
             return None
 
