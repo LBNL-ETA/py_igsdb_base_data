@@ -20,14 +20,14 @@ class AngularResolutionType(Enum):
 
 INCIDENCE_ANGULAR_RESOLUTION_TYPES = [
     AngularResolutionType.DIRECT,
-    AngularResolutionType.BSDF
+    AngularResolutionType.BSDF,
 ]
 
 OUTGOING_ANGULAR_RESOLUTION_TYPES = [
     AngularResolutionType.DIRECT,
     AngularResolutionType.DIFFUSE,
     AngularResolutionType.DIRECT_DIFFUSE,
-    AngularResolutionType.BSDF
+    AngularResolutionType.BSDF,
 ]
 
 
@@ -65,15 +65,6 @@ class AngleBlock:
 
 @dataclass_json
 @dataclass
-class OpticalProperties:
-    optical_data_type: str = OpticalDataType.DISCRETE.name
-    incidence_angular_resolution_type: str = AngularResolutionType.DIRECT.name
-    outgoing_angular_resolution_type: str = AngularResolutionType.DIRECT.name
-    optical_data: Dict = field(default_factory=dict)
-
-
-@dataclass_json
-@dataclass
 class OpticalData:
     number_incidence_angles: Optional[int] = None
     angle_blocks: typing.List[AngleBlock] = field(default_factory=list)
@@ -106,9 +97,10 @@ class OpticalProperties:
             return False
         for angle_block in self.optical_data.angle_blocks:
             for w_data in angle_block.wavelength_data:
-                w = float(w_data['w'])
-                if w > 2500:
+                w = float(w_data["w"])
+                if w >= 25.0:
                     return True
+        return False
 
 
 @dataclass
@@ -219,7 +211,6 @@ class OpticalColorResults:
 
 
 class OpticalStandardMethodResultsFactory:
-
     @classmethod
     def create(cls) -> OpticalStandardMethodResults:
         """
@@ -234,7 +225,6 @@ class OpticalStandardMethodResultsFactory:
 
 
 class OpticalColorResultFactory:
-
     @classmethod
     def create(cls) -> OpticalColorResult:
         result = OpticalColorResult()
@@ -245,7 +235,6 @@ class OpticalColorResultFactory:
 
 
 class OpticalColorResultsFactory:
-
     @classmethod
     def create(cls) -> OpticalColorResults:
         """
@@ -260,7 +249,6 @@ class OpticalColorResultsFactory:
 
 
 class OpticalColorFluxResultsFactory:
-
     @classmethod
     def create(cls) -> OpticalColorFluxResults:
         """
@@ -382,7 +370,7 @@ class IntegratedSpectralAveragesSummaryValues:
             return self.photopic.transmittance_front.direct_direct
         except AttributeError:
             return None
-        
+
     @property
     def tf_vis_dir_dif(self):
         try:
@@ -665,7 +653,7 @@ class IntegratedSpectralAveragesSummaryValues:
             return self.thermal_ir.emissivity_back_hemispheric
         except AttributeError:
             return None
-        
+
     def flatten(self) -> Dict:
         """
         Flatten the summary data to a dictionary.
@@ -674,75 +662,58 @@ class IntegratedSpectralAveragesSummaryValues:
             "tf_sol": self.tf_sol,
             "tf_sol_dir_dif": self.tf_sol_dir_dif,
             "tf_sol_dir_hem": self.tf_sol_dir_hem,
-
             "tb_sol": self.tb_sol,
             "tb_sol_dir_dif": self.tb_sol_dir_dif,
             "tb_sol_dir_hem": self.tb_sol_dir_hem,
-
             "rf_sol": self.rf_sol,
             "rf_sol_dir_dif": self.rf_sol_dir_dif,
             "rf_sol_dir_hem": self.rf_sol_dir_hem,
-
             "rb_sol": self.rb_sol,
             "rb_sol_dir_dif": self.rb_sol_dir_dif,
             "rb_sol_dir_hem": self.rb_sol_dir_hem,
-
             "tf_vis": self.tf_vis,
             "tf_vis_dir_dif": self.tf_vis_dir_dif,
             "tf_vis_dir_hem": self.tf_vis_dir_hem,
-
             "tb_vis": self.tb_vis,
             "tb_vis_dir_dif": self.tb_vis_dir_dif,
             "tb_vis_dir_hem": self.tb_vis_dir_hem,
-
             "rf_vis": self.rf_vis,
             "rf_vis_dir_dif": self.rf_vis_dir_dif,
             "rf_vis_dir_hem": self.rf_vis_dir_hem,
-
             "rb_vis": self.rb_vis,
             "rb_vis_dir_dif": self.rb_vis_dir_dif,
             "rb_vis_dir_hem": self.rb_vis_dir_hem,
-
             "tf_tuv": self.tf_tuv,
             "tf_spf": self.tf_spf,
             "tf_tdw": self.tf_tdw,
             "tf_tkr": self.tf_tkr,
-
             "tf_ciex": self.tf_ciex,
             "tf_ciey": self.tf_ciey,
             "tf_ciez": self.tf_ciez,
-
             "rf_ciex": self.rf_ciex,
             "rf_ciey": self.rf_ciey,
             "rf_ciez": self.rf_ciez,
-
             "rb_ciex": self.rb_ciex,
             "rb_ciey": self.rb_ciey,
             "rb_ciez": self.rb_ciez,
-
             "tf_r": self.tf_r,
             "tf_b": self.tf_b,
             "tf_g": self.tf_g,
-
             "rf_r": self.rf_r,
             "rf_b": self.rf_b,
             "rf_g": self.rf_g,
-
             "rb_r": self.rb_r,
             "rb_b": self.rb_b,
             "rb_g": self.rb_g,
-
             "tir_front": self.tir_front,
             "tir_back": self.tir_back,
             "emissivity_front": self.emissivity_front,
-            "emissivity_back": self.emissivity_back
-
+            "emissivity_back": self.emissivity_back,
         }
         return data
 
 
 class IntegratedSpectralAveragesSummaryValuesFactory:
-
     @classmethod
     def create(cls) -> IntegratedSpectralAveragesSummaryValues:
         """
