@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.61
+
+- Fix bugs in getters to IntegratedSpectralAveragesSummaryValues
+
 ## v0.0.60
 
 - Added missing getters to IntegratedSpectralAveragesSummaryValues
