@@ -382,6 +382,20 @@ class IntegratedSpectralAveragesSummaryValues:
             return self.photopic.transmittance_front.direct_direct
         except AttributeError:
             return None
+        
+    @property
+    def tf_vis_dir_dif(self):
+        try:
+            return self.photopic.transmittance_front.direct_diffuse
+        except AttributeError:
+            return None
+
+    @property
+    def tf_vis_dir_hem(self):
+        try:
+            return self.photopic.transmittance_front.direct_hemispherical
+        except AttributeError:
+            return None
 
     @property
     def tb_vis(self):
