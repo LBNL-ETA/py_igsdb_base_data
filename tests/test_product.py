@@ -43,10 +43,13 @@ class TestDataclass(TestCase):
             token="valid-monolithic-1",
             token_type=TokenType.PUBLISHED.name,
             data_file_name="valid_monolithic_1.abc",
+            publish_status="PUBLISHED"
         )
         self.assertEqual(p.type, ProductType.GLAZING.name)
         self.assertEqual(p.subtype, ProductSubtype.MONOLITHIC.name)
         self.assertEqual(p.token_type, TokenType.PUBLISHED.name)
+        self.assertEqual(p.token_type, "PUBLISHED")
+
 
     def test_create_product_from_dict(self):
         example_product_json = Path("tests/data/valid_monolithic_1.json")
