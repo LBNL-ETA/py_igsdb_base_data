@@ -656,6 +656,7 @@ class BaseProduct(IGSDBObject):
     manufacturer: Optional[str] = None
     material: Optional[str] = None
     product_description: ProductDescription = None
+    publish_status: Optional[str] = None
     published_date: Optional[str] = None
     hidden: bool = False
     appearance: Optional[str] = None
