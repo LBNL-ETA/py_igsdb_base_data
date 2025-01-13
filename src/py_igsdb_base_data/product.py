@@ -383,7 +383,7 @@ class BlindGeometry(BaseGeometry):
         max_rise = slat_width / 2
         if rise > max_rise:
             raise Exception(
-                f"Rise must be equal or less than {max_rise} " f"(slat width / 2)."
+                f"Rise must be equal or less than {max_rise} (slat width / 2)."
             )
 
         # Rise value is ok. Calculate curvature from rise...
