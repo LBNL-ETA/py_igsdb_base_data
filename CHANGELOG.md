@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.64
+
+- Change PerforatedScreenGeometry 'type' property's type from int to string
+
 ## v0.0.63
 
 - Add 'publish_status' property to BaseProduct.

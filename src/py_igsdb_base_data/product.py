@@ -428,7 +428,7 @@ class PerforatedScreenGeometry(BaseGeometry):
     2 : rectangle
     """
 
-    type: Optional[int] = None
+    type: Optional[str] = None
 
     # dim_x is "radius" when type = 3
     dim_x: Optional[str] = None
