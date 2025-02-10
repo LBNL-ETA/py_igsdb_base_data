@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.65
+
+- Add 'diameter' property to PerforatedScreenGeometry 
+
 ## v0.0.64
 
 - Change PerforatedScreenGeometry 'type' property's type from int to string

@@ -412,9 +412,9 @@ class VerticalLouverGeometry(BlindGeometry):
 
 
 class PerforatedScreenGeometryType(Enum):
-    CIRCULAR = '0'
-    SQUARE = '1'
-    RECTANGLE = '2'
+    CIRCULAR = "0"
+    SQUARE = "1"
+    RECTANGLE = "2"
 
 
 @dataclass_json
@@ -437,6 +437,12 @@ class PerforatedScreenGeometry(BaseGeometry):
 
     spacing_x: Optional[str] = None
     spacing_y: Optional[str] = None
+
+    @property
+    def diameter(self) -> Optional[str]:
+        if self.type == PerforatedScreenGeometryType.CIRCULAR.value:
+            return self.dim_x
+        return None
 
 
 @dataclass_json
