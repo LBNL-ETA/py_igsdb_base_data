@@ -414,7 +414,7 @@ class VerticalLouverGeometry(BlindGeometry):
 class PerforatedScreenGeometryType(Enum):
     CIRCULAR = "0"
     SQUARE = "1"
-    RECTANGLE = "2"
+    RECTANGULAR = "2"
 
 
 @dataclass_json
