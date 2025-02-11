@@ -425,7 +425,7 @@ class PerforatedScreenGeometry(BaseGeometry):
     Type indicates shape of perforations:
     0 : circular
     1 : square
-    2 : rectangle
+    2 : rectangular
     """
 
     type: Optional[str] = None
