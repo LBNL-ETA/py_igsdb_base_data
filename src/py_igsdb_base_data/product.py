@@ -114,7 +114,7 @@ class ProductSubtype(Enum):
 
 
 class CoatedSideType(Enum):
-    MUTLIPLE = "multiple" # embedded and either front or back or both front and back.
+    MUTLIPLE = "multiple" # embedded and either 1) front or back or 2) both front and back.
     FRONT = "front"
     BACK = "back"
     BOTH = "both"
