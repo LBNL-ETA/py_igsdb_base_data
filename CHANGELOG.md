@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.67
+
+- Updated CoatedSideType to include new values.
+
 ## v0.0.66
 
 - Change 'RECTANGLE' to 'RECTANGULAR' to match wincalc convention
