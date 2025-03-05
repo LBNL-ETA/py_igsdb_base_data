@@ -114,12 +114,12 @@ class ProductSubtype(Enum):
 
 
 class CoatedSideType(Enum):
-    MUTLIPLE = "multiple" # embedded and either 1) front or back or 2) both front and back.
+    MULTIPLE = "multiple" # embedded and either 1) front or back or 2) both front and back.
     FRONT = "front"
     BACK = "back"
-    BOTH = "both"
-    EMBEDDED = "embedded"
-    NEITHER = "neither"
+    BOTH = "both" # both front and back
+    EMBEDDED = "embedded" # embedded coating, usually in a LAMINATE product.
+    NEITHER = "neither" # neither front nor back
     UNKNOWN = "unknown"
     NA = "not applicable"
 
