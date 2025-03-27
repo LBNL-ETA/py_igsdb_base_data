@@ -86,8 +86,7 @@ class ProductSubtype(Enum):
     # SHADING Subtypes
     # ----------------------------------------
 
-    # These have a geometry (GeometricProperties object)
-    # associated with them:
+    # These have a geometry associated with them:
     VENETIAN_BLIND = "Venetian blind"
     VERTICAL_LOUVER = "Vertical louver"
     PERFORATED_SCREEN = "Perforated screen"
@@ -114,12 +113,14 @@ class ProductSubtype(Enum):
 
 
 class CoatedSideType(Enum):
-    MULTIPLE = "multiple" # embedded and either 1) front or back or 2) both front and back.
+    MULTIPLE = (
+        "multiple"  # embedded and either 1) front or back or 2) both front and back.
+    )
     FRONT = "front"
     BACK = "back"
-    BOTH = "both" # both front and back
-    EMBEDDED = "embedded" # embedded coating, usually in a LAMINATE product.
-    NEITHER = "neither" # neither front nor back
+    BOTH = "both"  # both front and back
+    EMBEDDED = "embedded"  # embedded coating, usually in a LAMINATE product.
+    NEITHER = "neither"  # neither front nor back
     UNKNOWN = "unknown"
     NA = "not applicable"
 
@@ -242,6 +243,18 @@ class ProductDescription:
 
 @dataclass_json
 @dataclass
+class BaseGeometry:
+    pass
+
+
+@dataclass_json
+@dataclass
+class GeometricProperties:
+    geometry: Optional[BaseGeometry] = None
+
+
+@dataclass_json
+@dataclass
 class PhysicalProperties:
     thickness: Optional[Decimal] = None
     permeability_factor: Optional[Decimal] = None
@@ -259,15 +272,14 @@ class PhysicalProperties:
     predefined_emissivity_front: Optional[str] = None
     predefined_emissivity_back: Optional[str] = None
 
+    # Geometric properties of product. (Currently only used by
+    # shading products. In the CGDB -> ISDB migration, holds values
+    # defined in CGDB tables WovenShades, VenetianBlinds and PerforatedScreens.)
+    geometric_properties: Optional[GeometricProperties] = None
+
     def __post_init__(self):
         if self.optical_properties is None:
             self.optical_properties = OpticalProperties()
-
-
-@dataclass_json
-@dataclass
-class BaseGeometry:
-    pass
 
 
 @dataclass_json
@@ -453,12 +465,6 @@ class WovenShadeGeometry(BaseGeometry):
     thread_diameter: Optional[str] = None
     thread_spacing: Optional[str] = None
     shade_thickness: Optional[str] = None
-
-
-@dataclass_json
-@dataclass
-class GeometricProperties:
-    geometry: Optional[BaseGeometry] = None
 
 
 @dataclass_json
@@ -694,11 +700,6 @@ class BaseProduct(IGSDBObject):
     # last of 'official' IGSDB values so that in json output, the (really long)
     # spectral_data is at the bottom of the page. This helps developers debug.
     physical_properties: Optional[PhysicalProperties] = None
-
-    # Geometric properties of product. (Currently only used by
-    # shading products. In the CGDB -> ISDB migration, holds values
-    # defined in CGDB tables WovenShades, VenetianBlinds and PerforatedScreens.)
-    geometric_properties: Optional[GeometricProperties] = None
 
     # LEGACY IGDB VALUES. IGNORED BY IGSDB!
     # Properties we store as part of this library to help us

@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.68
+
+- Make 'GeometricProperties' a property of 'PhysicalProperties'
+
 ## v0.0.67
 
 - Updated CoatedSideType to include new values.
