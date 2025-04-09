@@ -1,5 +1,9 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.69
+
+- For CoatedSideType, use "NOT_APPLICABLE" instead of the more ambiguous "NA"
+
 ## v0.0.68
 
 - Make 'GeometricProperties' a property of 'PhysicalProperties'

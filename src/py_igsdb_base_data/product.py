@@ -122,7 +122,10 @@ class CoatedSideType(Enum):
     EMBEDDED = "embedded"  # embedded coating, usually in a LAMINATE product.
     NEITHER = "neither"  # neither front nor back
     UNKNOWN = "unknown"
-    NA = "not applicable"
+    # "NA" Was used in legacy submission files. In IGSDB and Checkertool v2
+    # we use the more descriptive "NOT_APPLICABLE" instead.
+    #NA = "not applicable"
+    NOT_APPLICABLE = "not applicable"
 
 
 class DataFileType(Enum):
