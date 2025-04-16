@@ -6,7 +6,7 @@ from typing import Dict, Optional
 
 class MaterialType(Enum):
     UNKNOWN = "Unknown"
-    NA = "Not applicable"
+    NOT_APPLICABLE = "Not applicable"
     GLASS = "glass"
     PVB = "PVB"
     POLYCARBONATE = "polycarbonate"
