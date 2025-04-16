@@ -14,9 +14,10 @@ class MaterialType(Enum):
     PET = "PET"
 
 
+# This is a mapping of the IGDB material type to the MaterialType enum.
 material_type_lookup = {
     1: "UNKNOWN",
-    2: "NA",
+    2: "NA", # This is the legacy value used in the IGDB for 'not applicable'
     3: "GLASS",
     4: "PVB",
     5: "POLYCARBONATE",
