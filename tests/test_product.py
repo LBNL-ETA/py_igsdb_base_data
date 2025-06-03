@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional, List
 from unittest import TestCase
-
+from decimal import Decimal
 import pytest
 from dataclasses_json import dataclass_json
 
@@ -185,17 +185,17 @@ class TestDataclass(TestCase):
 class TestBlindGeometry(TestCase):
     def test_set_curvature_from_rise_standard(self):
         t = BlindGeometry()
-        t.slat_width = "10"
-        t._rise = "2.5"
+        t.slat_width = Decimal(10)
+        t._rise = Decimal(2.5)
         t.set_curvature_from_rise()
 
-        slat_curvature = float(t.slat_curvature)
+        slat_curvature = Decimal(t.slat_curvature)
         self.assertAlmostEqual(6.25, slat_curvature)
 
     def test_set_curvature_from_rise_at_0(self):
         t = BlindGeometry()
-        t.slat_width = "10"
-        t._rise = "0"
+        t.slat_width = Decimal(10)
+        t._rise = Decimal(0)
         t.set_curvature_from_rise()
 
         slat_curvature = float(t.slat_curvature)
@@ -203,8 +203,8 @@ class TestBlindGeometry(TestCase):
 
     def test_set_curvature_from_rise_at_negative(self):
         t = BlindGeometry()
-        t.slat_width = "10"
-        t._rise = "-10"
+        t.slat_width = Decimal(10)
+        t._rise = Decimal(-10)
         t.set_curvature_from_rise()
 
         slat_curvature = float(t.slat_curvature)
@@ -212,8 +212,8 @@ class TestBlindGeometry(TestCase):
 
     def test_rise_from_curvature_at_0(self):
         t = BlindGeometry()
-        t.slat_curvature = "0"  # mm
-        t.slat_width = "10"  # mm
+        t.slat_curvature = Decimal(0)  # mm
+        t.slat_width = Decimal(10)  # mm
         t.set_rise_from_curvature()
 
         rise = float(t.rise)
@@ -221,8 +221,8 @@ class TestBlindGeometry(TestCase):
 
     def test_rise_from_curvature_at_negative(self):
         t = BlindGeometry()
-        t.slat_curvature = "-10"  # mm
-        t.slat_width = "10"  # mm
+        t.slat_curvature = Decimal(-10)  # mm
+        t.slat_width = Decimal(10)  # mm
         t.set_rise_from_curvature()
 
         rise = float(t.rise)
@@ -230,8 +230,8 @@ class TestBlindGeometry(TestCase):
 
     def test_rise_from_curvature_standard(self):
         t = BlindGeometry()
-        t.slat_curvature = "5"  # mm
-        t.slat_width = "10"  # mm
+        t.slat_curvature = Decimal(5)  # mm
+        t.slat_width = Decimal(10)  # mm
         t.set_rise_from_curvature()
 
         rise = float(t.rise)

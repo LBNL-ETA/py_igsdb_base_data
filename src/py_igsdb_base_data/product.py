@@ -337,7 +337,7 @@ class BlindGeometry(BaseGeometry):
         Returns:
             The calculated rise, in mm (also internally sets rise field).
         """
-        if self.slat_curvature is None or self.slat_curvature == "":
+        if self.slat_curvature is None:
             raise ValueError(
                 "Slat curvature must be defined before calling this method."
             )
