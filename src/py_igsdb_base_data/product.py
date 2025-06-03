@@ -301,16 +301,16 @@ class BlindGeometry(BaseGeometry):
     _rise: Optional[str] = None
 
     # Units: mm
-    slat_width: Optional[str] = None
+    slat_width: Optional[Decimal] = None
 
     # Units: mm
-    slat_spacing: Optional[str] = None
+    slat_spacing: Optional[Decimal] = None
 
     # Units: mm
-    slat_curvature: Optional[str] = None
+    slat_curvature: Optional[Decimal] = None
 
     # Units: degrees
-    slat_tilt: Optional[str] = None
+    slat_tilt: Optional[Decimal] = None
 
     # Segments are used to represent curvature
     # (Defaults to 5)
@@ -321,12 +321,12 @@ class BlindGeometry(BaseGeometry):
     tilt_choice: Optional[str] = None
 
     @property
-    def rise(self) -> Optional[str]:
+    def rise(self) -> Optional[Decimal]:
         if not self._rise and self.slat_curvature:
             self.set_rise_from_curvature()
         return self._rise
 
-    def set_rise_from_curvature(self) -> str:
+    def set_rise_from_curvature(self) -> Decimal:
         """
         Calculate rise in mm from curvature in mm.
 
@@ -342,21 +342,21 @@ class BlindGeometry(BaseGeometry):
                 "Slat curvature must be defined before calling this method."
             )
 
-        if self.slat_curvature == "0":
-            self._rise = "0"
-            return "0"
+        if self.slat_curvature == 0:
+            self._rise = Decimal(0)
+            return self._rise
 
-        if float(self.slat_curvature) < 0:
-            self._rise = "0"
-            return "0"
+        if self.slat_curvature < 0:
+            self._rise = Decimal(0)
+            return self._rise
 
-        curvature = float(self.slat_curvature)
+        curvature = self.slat_curvature
         if self.slat_width is None:
             raise ValueError(
                 "Slat width must be defined to calculate rise from curvature."
             )
 
-        slat_width = float(self.slat_width)
+        slat_width = self.slat_width
         val = curvature * curvature - slat_width * slat_width / 4
         if val < 0:
             rise = slat_width / 2
@@ -364,11 +364,11 @@ class BlindGeometry(BaseGeometry):
             r_prime = sqrt(val)
             rise = curvature - r_prime
 
-        self._rise = str(rise)
+        self._rise = rise
 
         return self._rise
 
-    def set_curvature_from_rise(self) -> str:
+    def set_curvature_from_rise(self) -> Decimal:
         """
         Calculate curvature in mm from rise in mm.
 
@@ -382,15 +382,14 @@ class BlindGeometry(BaseGeometry):
         if self._rise is None or self._rise == "":
             raise ValueError("Rise must be defined before calling this method.")
 
-        if self._rise == "0":
-            self.slat_curvature = "0"
-            return "0"
+        if self._rise == 0:
+            self.slat_curvature = Decimal(0)
+            return self.slat_curvature
+        elif self._rise < 0:
+            self.slat_curvature = Decimal(0)
+            return self.slat_curvature
 
-        if float(self._rise) < 0:
-            self.slat_curvature = "0"
-            return "0"
-
-        rise = float(self._rise)
+        rise = self._rise
         if self.slat_width is None:
             raise ValueError(
                 "Slat width must be defined to calculate curvature from rise."
@@ -398,7 +397,7 @@ class BlindGeometry(BaseGeometry):
 
         # What follows is a direct port of algoritm from WINDOW8
 
-        slat_width = float(self.slat_width)
+        slat_width = self.slat_width
         max_rise = slat_width / 2
         if rise > max_rise:
             raise Exception(
@@ -413,7 +412,7 @@ class BlindGeometry(BaseGeometry):
         else:
             curvature = val
 
-        self.slat_curvature = str(curvature)
+        self.slat_curvature = curvature
 
         return self.slat_curvature
 
@@ -450,15 +449,15 @@ class PerforatedScreenGeometry(BaseGeometry):
     type: Optional[str] = None
 
     # dim_x is "radius" when type = 3
-    dim_x: Optional[str] = None
+    dim_x: Optional[Decimal] = None
     # dim_y is not used when type = 1 or 3
-    dim_y: Optional[str] = None
+    dim_y: Optional[Decimal] = None
 
-    spacing_x: Optional[str] = None
-    spacing_y: Optional[str] = None
+    spacing_x: Optional[Decimal] = None
+    spacing_y: Optional[Decimal] = None
 
     @property
-    def diameter(self) -> Optional[str]:
+    def diameter(self) -> Optional[Decimal]:
         if self.type == PerforatedScreenGeometryType.CIRCULAR.value:
             return self.dim_x
         return None
@@ -467,9 +466,9 @@ class PerforatedScreenGeometry(BaseGeometry):
 @dataclass_json
 @dataclass
 class WovenShadeGeometry(BaseGeometry):
-    thread_diameter: Optional[str] = None
-    thread_spacing: Optional[str] = None
-    shade_thickness: Optional[str] = None
+    thread_diameter: Optional[Decimal] = None
+    thread_spacing: Optional[Decimal] = None
+    shade_thickness: Optional[Decimal] = None
 
 
 @dataclass_json
@@ -514,7 +513,7 @@ class CompositionDetails:
     layer_filename: Optional[str] = None
     substrate_data_file_name: Optional[str] = None
     coating_id: Optional[int] = None
-    coating_name: Optional[int] = None
+    coating_name: Optional[str] = None
 
     # coated_side_faces_exterior is a convenience property.
     # Sometimes we might not have access to the child product's
@@ -580,7 +579,7 @@ class ProductComposition:
     token: Optional[str] = None
     index: Optional[int] = None
     name: Optional[str] = None
-    thickness: Optional[float] = None
+    thickness: Optional[Decimal] = None
     composition_details: Optional[CompositionDetails] = None
     new_product_definition: Optional[NewProductDefinition] = None
 
@@ -604,7 +603,7 @@ class ShadeLayerProperties:
     shade_material_id: Optional[int] = None
     hole_area: Optional[Decimal] = None  # Float in CGDB, max six decimal places.
     bsdf_path: Optional[str] = None
-    convection_factor: Optional[str] = None  # Float in CGDB, max 1 decimal place.
+    convection_factor: Optional[Decimal] = None  # Float in CGDB, max 1 decimal place.
     timestamp: Optional[int] = None
 
 
@@ -941,7 +940,7 @@ class BaseProduct(IGSDBObject):
             return False
         if self.composition:
             for layer_index, composition_layer in enumerate(self.composition):
-                if composition_layer.get("subtype", None) == ProductSubtype.COATED.name:
+                if composition_layer.subtype == ProductSubtype.COATED.name:
                     composition_details: CompositionDetails = (
                         composition_layer.composition_details
                     )

@@ -3,7 +3,7 @@
 
 ## v0.0.71
 
-- Use Decimal for predefined_tir_* and predefined_emissivity_*
+- Use Decimal instead of string for some fields
 
 ## v0.0.70
 
