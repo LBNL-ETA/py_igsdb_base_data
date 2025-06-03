@@ -822,7 +822,7 @@ class BaseProduct(IGSDBObject):
 
     # GETTERS for TIR and Emissivity
 
-    def get_tir_front(self, calculation_standard_name: str = "NFRC") -> Optional[Decimal]:
+    def get_tir_front(self, calculation_standard_name: str = "NFRC") -> Optional[Decimal|float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
@@ -840,7 +840,7 @@ class BaseProduct(IGSDBObject):
 
         return None
 
-    def get_tir_back(self, calculation_standard_name: str = "NFRC") -> Optional[Decimal]:
+    def get_tir_back(self, calculation_standard_name: str = "NFRC") -> Optional[Decimal|float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
@@ -860,7 +860,7 @@ class BaseProduct(IGSDBObject):
 
     def get_emissivity_front(
         self, calculation_standard_name: str = "NFRC"
-    ) -> Optional[Decimal]:
+    ) -> Optional[Decimal|float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
@@ -880,7 +880,7 @@ class BaseProduct(IGSDBObject):
 
     def get_emissivity_back(
         self, calculation_standard_name: str = "NFRC"
-    ) -> Optional[Decimal]:
+    ) -> Optional[Decimal|float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
