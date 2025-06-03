@@ -1,5 +1,10 @@
 # Changelog : py_igsdb_base_data
 
+
+## v0.0.71
+
+- Use Decimal for predefined_tir_* and predefined_emissivity_*
+
 ## v0.0.70
 
 - For MaterialType, use "NOT_APPLICABLE" instead of the more ambiguous "NA"
