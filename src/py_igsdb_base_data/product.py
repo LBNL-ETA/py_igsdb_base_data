@@ -328,92 +328,66 @@ class BlindGeometry(BaseGeometry):
 
     def set_rise_from_curvature(self) -> Decimal:
         """
-        Calculate rise in mm from curvature in mm.
-
-        Sets the rise field to this value if valid.
-
-        IMPORTANT: The "slat_curvature" property of this instance must be set before calling this method.
-
-        Returns:
-            The calculated rise, in mm (also internally sets rise field).
+        Calculate rise in mm from curvature in mm, using Decimal arithmetic.
         """
         if self.slat_curvature is None:
-            raise ValueError(
-                "Slat curvature must be defined before calling this method."
-            )
+            raise ValueError("Slat curvature must be defined before calling this method.")
 
-        if self.slat_curvature == 0:
+        # If curvature is zero or negative, rise is zero.
+        if self.slat_curvature <= Decimal(0):
             self._rise = Decimal(0)
             return self._rise
 
-        if self.slat_curvature < 0:
-            self._rise = Decimal(0)
-            return self._rise
+        if self.slat_width is None:
+            raise ValueError("Slat width must be defined to calculate rise from curvature.")
 
         curvature = self.slat_curvature
-        if self.slat_width is None:
-            raise ValueError(
-                "Slat width must be defined to calculate rise from curvature."
-            )
-
         slat_width = self.slat_width
-        val = curvature * curvature - slat_width * slat_width / 4
-        if val < 0:
-            rise = slat_width / 2
+
+        val = (curvature * curvature) - (slat_width * slat_width / Decimal(4))
+
+        if val < Decimal(0):
+            rise = slat_width / Decimal(2)
         else:
-            r_prime = sqrt(val)
+            r_prime = val.sqrt()
             rise = curvature - r_prime
 
         self._rise = rise
-
         return self._rise
 
     def set_curvature_from_rise(self) -> Decimal:
         """
-        Calculate curvature in mm from rise in mm.
-
-        Sets the slat_curvature field to this value if valid.
-
-        IMPORTANT: The "rise" property of this instance must be set before calling this method.
-
-        Returns:
-            The calculated curvature, in mm (also internally sets slat_curvature field).
+        Calculate curvature in mm from rise in mm, using Decimal arithmetic.
         """
-        if self._rise is None or self._rise == "":
+        if self._rise is None:
             raise ValueError("Rise must be defined before calling this method.")
 
-        if self._rise == 0:
-            self.slat_curvature = Decimal(0)
-            return self.slat_curvature
-        elif self._rise < 0:
+        # If rise is zero or negative, curvature is zero.
+        if self._rise <= Decimal(0):
             self.slat_curvature = Decimal(0)
             return self.slat_curvature
 
         rise = self._rise
-        if self.slat_width is None:
-            raise ValueError(
-                "Slat width must be defined to calculate curvature from rise."
-            )
 
-        # What follows is a direct port of algoritm from WINDOW8
+        if self.slat_width is None:
+            raise ValueError("Slat width must be defined to calculate curvature from rise.")
 
         slat_width = self.slat_width
-        max_rise = slat_width / 2
+        max_rise = slat_width / Decimal(2)
         if rise > max_rise:
-            raise Exception(
-                f"Rise must be equal or less than {max_rise} (slat width / 2)."
-            )
+            raise ValueError(f"Rise must be ≤ {max_rise} (slat_width/2).")
 
-        # Rise value is ok. Calculate curvature from rise...
-        val = (rise * rise + slat_width * slat_width / 4) / (2 * rise)
+        # val = (rise^2 + slat_width^2/4) / (2*rise)
+        numerator = (rise * rise) + (slat_width * slat_width / Decimal(4))
+        denominator = rise * Decimal(2)
+        val = numerator / denominator
 
-        if val < 0:
-            curvature = slat_width / 2
+        if val < Decimal(0):
+            curvature = slat_width / Decimal(2)
         else:
             curvature = val
 
         self.slat_curvature = curvature
-
         return self.slat_curvature
 
 
