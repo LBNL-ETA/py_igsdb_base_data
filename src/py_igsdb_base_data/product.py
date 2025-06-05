@@ -298,7 +298,7 @@ class BlindGeometry(BaseGeometry):
 
     """
 
-    _rise: Optional[str] = None
+    _rise: Optional[Decimal] = None
 
     # Units: mm
     slat_width: Optional[Decimal] = None
