@@ -3,10 +3,9 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from math import sqrt
 from typing import List, Dict
 from typing import Optional
-
+from typing import get_origin, get_args, Optional
 from dataclasses_json import dataclass_json
 
 from py_igsdb_base_data.material import MaterialBulkProperties
@@ -124,7 +123,7 @@ class CoatedSideType(Enum):
     UNKNOWN = "unknown"
     # "NA" Was used in legacy submission files. In IGSDB and Checkertool v2
     # we use the more descriptive "NOT_APPLICABLE" instead.
-    #NA = "not applicable"
+    # NA = "not applicable"
     NOT_APPLICABLE = "not applicable"
 
 
@@ -247,7 +246,52 @@ class ProductDescription:
 @dataclass_json
 @dataclass
 class BaseGeometry:
-    pass
+    @classmethod
+    def from_dict(cls, d: dict):
+        """
+        Before letting dataclasses_json do its normal parsing, rewrite 'd'
+        so that any field whose annotation is Decimal or Optional[Decimal]
+        and whose value is a str, gets wrapped in Decimal(…).
+        """
+        annotated: dict = {}
+        for field_name, raw_value in d.items():
+            if raw_value is None:
+                # leave None alone
+                annotated[field_name] = None
+                continue
+
+            # look up the annotation in cls.__annotations__
+            ann = cls.__annotations__.get(field_name, None)
+            if ann is None:
+                annotated[field_name] = raw_value
+                continue
+
+            # detect Optional[Decimal] or Decimal
+            origin = get_origin(ann)
+            args = get_args(ann)
+
+            # case 1: annotation is exactly Decimal
+            if ann is Decimal and isinstance(raw_value, str):
+                annotated[field_name] = Decimal(raw_value)
+                continue
+
+            # case 2: annotation is Optional[Decimal] (or Union[Decimal, NoneType])
+            if (
+                origin is Optional
+                and len(args) == 2
+                and args[0] is Decimal
+                and args[1] is type(None)
+            ):
+                # raw_value is not None (we already checked), so must be string→Decimal
+                if isinstance(raw_value, str):
+                    annotated[field_name] = Decimal(raw_value)
+                    continue
+
+            # otherwise, leave it be
+            annotated[field_name] = raw_value
+
+        # now call the dataclasses_json base implementation on the “fixed” dict
+        return super().from_dict(annotated)
 
 
 @dataclass_json
@@ -331,7 +375,9 @@ class BlindGeometry(BaseGeometry):
         Calculate rise in mm from curvature in mm, using Decimal arithmetic.
         """
         if self.slat_curvature is None:
-            raise ValueError("Slat curvature must be defined before calling this method.")
+            raise ValueError(
+                "Slat curvature must be defined before calling this method."
+            )
 
         # If curvature is zero or negative, rise is zero.
         if self.slat_curvature <= Decimal(0):
@@ -339,7 +385,9 @@ class BlindGeometry(BaseGeometry):
             return self._rise
 
         if self.slat_width is None:
-            raise ValueError("Slat width must be defined to calculate rise from curvature.")
+            raise ValueError(
+                "Slat width must be defined to calculate rise from curvature."
+            )
 
         curvature = self.slat_curvature
         slat_width = self.slat_width
@@ -370,7 +418,9 @@ class BlindGeometry(BaseGeometry):
         rise = self._rise
 
         if self.slat_width is None:
-            raise ValueError("Slat width must be defined to calculate curvature from rise.")
+            raise ValueError(
+                "Slat width must be defined to calculate curvature from rise."
+            )
 
         slat_width = self.slat_width
         max_rise = slat_width / Decimal(2)
@@ -795,7 +845,9 @@ class BaseProduct(IGSDBObject):
 
     # GETTERS for TIR and Emissivity
 
-    def get_tir_front(self, calculation_standard_name: str = "NFRC") -> Optional[Decimal|float]:
+    def get_tir_front(
+        self, calculation_standard_name: str = "NFRC"
+    ) -> Optional[Decimal | float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
@@ -813,7 +865,9 @@ class BaseProduct(IGSDBObject):
 
         return None
 
-    def get_tir_back(self, calculation_standard_name: str = "NFRC") -> Optional[Decimal|float]:
+    def get_tir_back(
+        self, calculation_standard_name: str = "NFRC"
+    ) -> Optional[Decimal | float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
@@ -833,7 +887,7 @@ class BaseProduct(IGSDBObject):
 
     def get_emissivity_front(
         self, calculation_standard_name: str = "NFRC"
-    ) -> Optional[Decimal|float]:
+    ) -> Optional[Decimal | float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
@@ -853,7 +907,7 @@ class BaseProduct(IGSDBObject):
 
     def get_emissivity_back(
         self, calculation_standard_name: str = "NFRC"
-    ) -> Optional[Decimal|float]:
+    ) -> Optional[Decimal | float]:
         # If we have a calculated value for the given standard, return that...
         if self.integrated_spectral_averages_summaries:
             for summary in self.integrated_spectral_averages_summaries:
