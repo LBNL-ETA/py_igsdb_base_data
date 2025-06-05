@@ -16,9 +16,9 @@ from py_igsdb_base_data.product import (
     BlindGeometry,
 )
 
-from src.py_igsdb_base_data.optical import AngleBlock, OpticalData, OpticalProperties
-from src.py_igsdb_base_data.product import ProductDescription
-from tests import utils
+from py_igsdb_base_data.optical import AngleBlock, OpticalData, OpticalProperties
+from py_igsdb_base_data.product import ProductDescription
+
 
 
 @dataclass_json

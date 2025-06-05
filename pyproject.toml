@@ -1,6 +1,8 @@
 [build-system]
-requires = [
-    "setuptools",
-    "wheel"
-]
+requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+
+[tool.pytest.ini_options]
+# Tell pytest to add “src” onto PYTHONPATH before running tests
+pythonpath = ["src"]

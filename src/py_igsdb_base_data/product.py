@@ -5,7 +5,7 @@ from decimal import Decimal
 from enum import Enum
 from typing import List, Dict
 from typing import Optional
-from typing import get_origin, get_args, Optional
+from typing import get_origin, get_args
 from dataclasses_json import dataclass_json
 
 from py_igsdb_base_data.material import MaterialBulkProperties
@@ -404,19 +404,13 @@ class BlindGeometry(BaseGeometry):
         return self._rise
 
     def set_curvature_from_rise(self) -> Decimal:
-        """
-        Calculate curvature in mm from rise in mm, using Decimal arithmetic.
-        """
         if self._rise is None:
             raise ValueError("Rise must be defined before calling this method.")
-
-        # If rise is zero or negative, curvature is zero.
         if self._rise <= Decimal(0):
             self.slat_curvature = Decimal(0)
             return self.slat_curvature
 
         rise = self._rise
-
         if self.slat_width is None:
             raise ValueError(
                 "Slat width must be defined to calculate curvature from rise."
@@ -427,7 +421,6 @@ class BlindGeometry(BaseGeometry):
         if rise > max_rise:
             raise ValueError(f"Rise must be ≤ {max_rise} (slat_width/2).")
 
-        # val = (rise^2 + slat_width^2/4) / (2*rise)
         numerator = (rise * rise) + (slat_width * slat_width / Decimal(4))
         denominator = rise * Decimal(2)
         val = numerator / denominator

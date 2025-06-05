@@ -2,7 +2,7 @@ from unittest import TestCase
 
 from py_igsdb_base_data.product import PhysicalProperties
 from decimal import Decimal
-from src.py_igsdb_base_data.product import BlindGeometry
+from py_igsdb_base_data.product import BlindGeometry
 
 
 class TestPhysicalPropertiesDataclass(TestCase):
