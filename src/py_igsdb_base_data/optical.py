@@ -603,7 +603,7 @@ class IntegratedSpectralAveragesSummaryValues:
             return None
 
     @property
-    def tir_front(self) -> Optional[str]:
+    def tir_front(self) -> Optional[float]:
         """
         Returns the front TIR.
 
@@ -616,7 +616,7 @@ class IntegratedSpectralAveragesSummaryValues:
             return None
 
     @property
-    def tir_back(self) -> Optional[str]:
+    def tir_back(self) -> Optional[float]:
         """
         Returns the back TIR.
 
@@ -629,7 +629,7 @@ class IntegratedSpectralAveragesSummaryValues:
             return None
 
     @property
-    def emissivity_front(self) -> Optional[str]:
+    def emissivity_front(self) -> Optional[float]:
         """
         Returns the front emissivity.
 
@@ -642,7 +642,7 @@ class IntegratedSpectralAveragesSummaryValues:
             return None
 
     @property
-    def emissivity_back(self) -> Optional[str]:
+    def emissivity_back(self) -> Optional[float]:
         """
         Returns the back emissivity.
 
