@@ -1,7 +1,7 @@
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
-from decimal import Decimal
+from decimal import Decimal, getcontext, localcontext
 from enum import Enum
 from typing import List, Dict
 from typing import Optional
@@ -364,6 +364,8 @@ class BlindGeometry(BaseGeometry):
     # so declaring this field as str.
     tilt_choice: Optional[str] = None
 
+    CALCULATED_CURVATURE_OR_RISE_SIG_DIGITS = 8
+
     @property
     def rise(self) -> Optional[Decimal]:
         if not self._rise and self.slat_curvature:
@@ -392,13 +394,14 @@ class BlindGeometry(BaseGeometry):
         curvature = self.slat_curvature
         slat_width = self.slat_width
 
-        val = (curvature * curvature) - (slat_width * slat_width / Decimal(4))
-
-        if val < Decimal(0):
-            rise = slat_width / Decimal(2)
-        else:
-            r_prime = val.sqrt()
-            rise = curvature - r_prime
+        with localcontext() as ctx:
+            ctx.prec = self.CALCULATED_CURVATURE_OR_RISE_SIG_DIGITS
+            val = (curvature * curvature) - (slat_width * slat_width / Decimal(4))
+            if val < Decimal(0):
+                rise = slat_width / Decimal(2)
+            else:
+                r_prime = val.sqrt()
+                rise = curvature - r_prime
 
         self._rise = rise
         return self._rise
@@ -416,19 +419,21 @@ class BlindGeometry(BaseGeometry):
                 "Slat width must be defined to calculate curvature from rise."
             )
 
-        slat_width = self.slat_width
-        max_rise = slat_width / Decimal(2)
-        if rise > max_rise:
-            raise ValueError(f"Rise must be ≤ {max_rise} (slat_width/2).")
+        with localcontext() as ctx:
+            ctx.prec = self.CALCULATED_CURVATURE_OR_RISE_SIG_DIGITS
+            slat_width = self.slat_width
+            max_rise = slat_width / Decimal(2)
+            if rise > max_rise:
+                raise ValueError(f"Rise must be ≤ {max_rise} (slat_width/2).")
 
-        numerator = (rise * rise) + (slat_width * slat_width / Decimal(4))
-        denominator = rise * Decimal(2)
-        val = numerator / denominator
+            numerator = (rise * rise) + (slat_width * slat_width / Decimal(4))
+            denominator = rise * Decimal(2)
+            val = numerator / denominator
 
-        if val < Decimal(0):
-            curvature = slat_width / Decimal(2)
-        else:
-            curvature = val
+            if val < Decimal(0):
+                curvature = slat_width / Decimal(2)
+            else:
+                curvature = val
 
         self.slat_curvature = curvature
         return self.slat_curvature

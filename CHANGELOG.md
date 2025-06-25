@@ -1,5 +1,8 @@
 # Changelog : py_igsdb_base_data
 
+## v0.0.72
+
+- Set Decimal precision locally before calculating rise or curvature
 
 ## v0.0.71
 
