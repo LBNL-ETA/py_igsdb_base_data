@@ -394,14 +394,21 @@ class BlindGeometry(BaseGeometry):
         curvature = self.slat_curvature
         slat_width = self.slat_width
 
-        with localcontext() as ctx:
-            ctx.prec = self.CALCULATED_CURVATURE_OR_RISE_SIG_DIGITS
-            val = (curvature * curvature) - (slat_width * slat_width / Decimal(4))
-            if val < Decimal(0):
-                rise = slat_width / Decimal(2)
-            else:
-                r_prime = val.sqrt()
-                rise = curvature - r_prime
+        try:
+            with localcontext() as ctx:
+                ctx.prec = self.CALCULATED_CURVATURE_OR_RISE_SIG_DIGITS
+                val = (curvature * curvature) - (slat_width * slat_width / Decimal(4))
+                if val < Decimal(0):
+                    rise = slat_width / Decimal(2)
+                else:
+                    r_prime = val.sqrt()
+                    rise = curvature - r_prime
+        except Exception as e:
+            logger.error(
+                f"Error calculating rise with curvature {curvature} "
+                f"and slat_width {slat_width} : {e}. "
+            )
+            raise e
 
         self._rise = rise
         return self._rise
@@ -412,28 +419,33 @@ class BlindGeometry(BaseGeometry):
         if self._rise <= Decimal(0):
             self.slat_curvature = Decimal(0)
             return self.slat_curvature
-
-        rise = self._rise
         if self.slat_width is None:
             raise ValueError(
                 "Slat width must be defined to calculate curvature from rise."
             )
 
-        with localcontext() as ctx:
-            ctx.prec = self.CALCULATED_CURVATURE_OR_RISE_SIG_DIGITS
-            slat_width = self.slat_width
-            max_rise = slat_width / Decimal(2)
-            if rise > max_rise:
-                raise ValueError(f"Rise must be ≤ {max_rise} (slat_width/2).")
+        rise = self._rise
+        slat_width = self.slat_width
 
-            numerator = (rise * rise) + (slat_width * slat_width / Decimal(4))
-            denominator = rise * Decimal(2)
-            val = numerator / denominator
-
-            if val < Decimal(0):
-                curvature = slat_width / Decimal(2)
-            else:
-                curvature = val
+        try:
+            with localcontext() as ctx:
+                ctx.prec = self.CALCULATED_CURVATURE_OR_RISE_SIG_DIGITS
+                max_rise = slat_width / Decimal(2)
+                if rise > max_rise:
+                    raise ValueError(f"Rise must be ≤ {max_rise} (slat_width/2).")
+                numerator = (rise * rise) + (slat_width * slat_width / Decimal(4))
+                denominator = rise * Decimal(2)
+                val = numerator / denominator
+                if val < Decimal(0):
+                    curvature = slat_width / Decimal(2)
+                else:
+                    curvature = val
+        except Exception as e:
+            logger.error(
+                f"Error calculating curvature with rise {rise} "
+                f"and slat_width {self.slat_width} : {e}. "
+            )
+            raise e
 
         self.slat_curvature = curvature
         return self.slat_curvature
