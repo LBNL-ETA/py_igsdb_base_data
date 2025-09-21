@@ -618,7 +618,7 @@ class ProductComposition:
     new_product_definition: Optional[NewProductDefinition] = None
 
     # Hold on to legacy data if we want...
-    legacy_filename: str = None
+    legacy_filename: Optional[str] = None
 
     # Fields for carrying over IGDB information
     # when loading from IGDB .mdb
