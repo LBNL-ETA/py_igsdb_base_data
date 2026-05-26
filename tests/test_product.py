@@ -20,7 +20,6 @@ from py_igsdb_base_data.optical import AngleBlock, OpticalData, OpticalPropertie
 from py_igsdb_base_data.product import ProductDescription
 
 
-
 @dataclass_json
 @dataclass
 class TestList:
@@ -43,13 +42,12 @@ class TestDataclass(TestCase):
             token="valid-monolithic-1",
             token_type=TokenType.PUBLISHED.name,
             data_file_name="valid_monolithic_1.abc",
-            publish_status="PUBLISHED"
+            publish_status="PUBLISHED",
         )
         self.assertEqual(p.type, ProductType.GLAZING.name)
         self.assertEqual(p.subtype, ProductSubtype.MONOLITHIC.name)
         self.assertEqual(p.token_type, TokenType.PUBLISHED.name)
         self.assertEqual(p.token_type, "PUBLISHED")
-
 
     def test_create_product_from_dict(self):
         example_product_json = Path("tests/data/valid_monolithic_1.json")
@@ -136,8 +134,8 @@ class TestDataclass(TestCase):
             product = BaseProduct()
             product.token_type = "INVALID"
 
-    def test_can_have_predefined_thermal_values(self): 
-        
+    def test_can_have_predefined_thermal_values(self):
+
         p = BaseProduct(subtype=ProductSubtype.LAMINATE.name)
         self.assertTrue(p.can_have_predefined_thermal_values)
 
@@ -170,16 +168,27 @@ class TestDataclass(TestCase):
         p.physical_properties = pp
 
         self.assertFalse(p.has_thermal_ir_wavelengths)
+        self.assertFalse(p.has_complete_thermal_ir_wavelengths)
 
-        # Now append > IR wavelength
+        # Now append > IR wavelength at 5 microns
         wavelength_data.append(
             {
-                "w": "2500",
+                "w": "5.0",
+                "specular": {"rb": "0.0472", "rf": "0.0472", "tb": "0", "tf": "0"},
+            }
+        )
+        self.assertTrue(p.has_thermal_ir_wavelengths)
+        self.assertFalse(p.has_complete_thermal_ir_wavelengths)
+
+        # Now append > IR wavelength at 25 microns
+        wavelength_data.append(
+            {
+                "w": "25.0",
                 "specular": {"rb": "0.0472", "rf": "0.0472", "tb": "0", "tf": "0"},
             }
         )
 
-        self.assertTrue(p.has_thermal_ir_wavelengths)
+        self.assertTrue(p.has_complete_thermal_ir_wavelengths)
 
 
 class TestBlindGeometry(TestCase):
