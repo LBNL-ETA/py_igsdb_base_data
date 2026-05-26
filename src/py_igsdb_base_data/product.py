@@ -842,7 +842,7 @@ class BaseProduct(IGSDBObject):
     @property
     def has_complete_thermal_ir_wavelengths(self) -> bool:
         """
-        Returns True if the product has thermal IR wavelength data.
+        Returns True if the product has thermal IR wavelength data  > 25 microns
 
         Returns:
             bool
@@ -856,7 +856,7 @@ class BaseProduct(IGSDBObject):
     @property
     def has_thermal_ir_wavelengths(self) -> bool:
         """
-        Returns True if the product has thermal IR wavelength data.
+        Returns True if the product has thermal IR wavelength data > 5 microns
 
         Returns:
             bool
