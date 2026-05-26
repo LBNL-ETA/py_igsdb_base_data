@@ -840,20 +840,6 @@ class BaseProduct(IGSDBObject):
             self.product_description = ProductDescription(name=v)
 
     @property
-    def has_complete_thermal_ir_wavelengths(self) -> bool:
-        """
-        Returns True if the product has thermal IR wavelength data  > 25 microns
-
-        Returns:
-            bool
-        """
-        if not self.physical_properties:
-            return False
-        if not self.physical_properties.optical_properties:
-            return False
-        return self.physical_properties.optical_properties.has_complete_thermal_ir_wavelengths
-
-    @property
     def has_thermal_ir_wavelengths(self) -> bool:
         """
         Returns True if the product has thermal IR wavelength data > 5 microns

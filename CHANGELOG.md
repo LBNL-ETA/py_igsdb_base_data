@@ -1,7 +1,4 @@
 # Changelog : py_igsdb_base_data
-## v0.0.74
-- Add new method 'has_complete_thermal_ir_wavelengths' to check for data >= 25 microns
-- Change 'has_thermal_ir_wavelengths' to check for data >= 5 microns
 
 ## v0.0.73
 

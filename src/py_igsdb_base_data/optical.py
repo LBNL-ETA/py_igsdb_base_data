@@ -87,24 +87,6 @@ class OpticalProperties:
     def has_thermal_ir_wavelengths(self) -> bool:
         """
         Returns True if the optical data has wavelength data up to
-        5 microns.
-
-        Returns:
-            bool
-        """
-        if not self.optical_data:
-            return False
-        for angle_block in self.optical_data.angle_blocks:
-            for w_data in angle_block.wavelength_data:
-                w = float(w_data["w"])
-                if w >= 5.0:
-                    return True
-        return False
-
-    @property
-    def has_complete_thermal_ir_wavelengths(self) -> bool:
-        """
-        Returns True if the optical data has wavelength data up to
         25 microns.
 
         Returns:

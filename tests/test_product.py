@@ -168,17 +168,16 @@ class TestDataclass(TestCase):
         p.physical_properties = pp
 
         self.assertFalse(p.has_thermal_ir_wavelengths)
-        self.assertFalse(p.has_complete_thermal_ir_wavelengths)
 
-        # Now append > IR wavelength at 5 microns
+        # Now append > IR wavelength at 5 microns, which is not enough to
+        # qualify for 'thermal IR' wavelengths.
         wavelength_data.append(
             {
                 "w": "5.0",
                 "specular": {"rb": "0.0472", "rf": "0.0472", "tb": "0", "tf": "0"},
             }
         )
-        self.assertTrue(p.has_thermal_ir_wavelengths)
-        self.assertFalse(p.has_complete_thermal_ir_wavelengths)
+        self.assertFalse(p.has_thermal_ir_wavelengths)
 
         # Now append > IR wavelength at 25 microns
         wavelength_data.append(
@@ -188,7 +187,7 @@ class TestDataclass(TestCase):
             }
         )
 
-        self.assertTrue(p.has_complete_thermal_ir_wavelengths)
+        self.assertTrue(p.has_thermal_ir_wavelengths)
 
 
 class TestBlindGeometry(TestCase):
